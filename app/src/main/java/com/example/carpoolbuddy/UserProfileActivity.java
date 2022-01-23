@@ -28,15 +28,20 @@ public class UserProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        // show currently signed in user name
         user_email = (TextView) this.findViewById(R.id.UP_email);
         user_email.setText(mUser.getEmail());
     }
 
+    // click to signout
    public void signOut(View v)
    {
-
+       FirebaseAuth.getInstance().signOut();
+       Intent intent = new Intent(this, AuthActivity.class);
+       startActivity(intent);
    }
 
+   // navigate to VehicleInfoActivity
    public void seeVehicles(View v)
    {
        Intent intent = new Intent(this, VehicleInfoActivity.class);
