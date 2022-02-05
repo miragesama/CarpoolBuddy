@@ -66,6 +66,8 @@ public class AddVehicleActivity extends AppCompatActivity {
         FirebaseUser mUser = mAuth.getCurrentUser();
 
         Vehicle myVehicle = new Vehicle(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString);
+
+
         System.out.println("myVehicle type is: "+myVehicle.getVehicleType());
         System.out.println("myVehicle model is: "+myVehicle.getModel());
         System.out.println("myVehicle capacity is: "+myVehicle.getCapacity());

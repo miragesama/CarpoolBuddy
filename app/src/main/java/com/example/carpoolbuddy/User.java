@@ -8,7 +8,7 @@ public class User {
     private String name;
     private String type;
     private Double priceMultiplier;
-    private ArrayList<String> ownedVehicles;
+    private ArrayList<Vehicle> ownedVehicles = new ArrayList<Vehicle>();
 
     public User()
     {
@@ -29,6 +29,18 @@ public class User {
         this.name = someName;
         this.type = someType;
         this.priceMultiplier = someMultiplier;
+    }
+
+    // method to add vehicle owned by the user
+    public void addVehicle(Vehicle v)
+    {
+        ownedVehicles.add(v);
+    }
+
+    // method to return vehicles owned by the user
+    public ArrayList<Vehicle> getVehicle()
+    {
+        return this.ownedVehicles;
     }
 
     public Integer getUid(){

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,8 +26,10 @@ public class VehicleInfoActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
     private RecyclerView myRecyclerView;
-  //  private VehicleAdaptor myAdaptor;
     private ArrayList<Vehicle> vehList;
+    private VehicleAdaptor.RecyclerViewClickListener listener;  // for RV click
+  //  private VehicleAdaptor myAdaptor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +53,24 @@ public class VehicleInfoActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
+
+                            // retrieve data from firebase and put in arraylist
                             vehList = new ArrayList<Vehicle>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 vehList.add(document.toObject(Vehicle.class));
                             }
 
-                            // write content of vehList for debug
+                            // write content of vehList arraylist for debug
                             for(Vehicle v : vehList){
                                 System.out.println("arrayobject: "+v.getModel()+" "+v.getCapacity());
                             }
 
-                            //set RV to display contents from arraylist
-                            VehicleAdaptor myAdaptor = new VehicleAdaptor(vehList);
+                            // set RV to display contents from arraylist
+                            setOnClickListener();  // for RV click, initialize the listener
+                            VehicleAdaptor myAdaptor = new VehicleAdaptor(vehList, listener); // include onClick listener
                             myRecyclerView.setAdapter(myAdaptor);
                             myRecyclerView.setLayoutManager(new LinearLayoutManager(VehicleInfoActivity.this));
 
@@ -72,6 +79,26 @@ public class VehicleInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    // onClickListener for RV click to show vehicle profile
+    private void setOnClickListener()
+    {
+        System.out.println("*** at setOnclickListener #1");
+        listener = new VehicleAdaptor.RecyclerViewClickListener()
+        {
+        @Override
+        public void onClick (View v,int position)
+        {
+            System.out.println("*** at setOnclickListner1.5");
+      //      Toast.makeText(getApplicationContext(), "TEST", Toast.LENGTH_SHORT).show();  // for debug, can be deleted
+            Intent intent = new Intent(getApplicationContext(), VehicleProfileActivity.class);
+            intent.putExtra("model", vehList.get(position).getModel());
+            intent.putExtra("capacity", vehList.get(position).getCapacity().toString());
+            startActivity(intent);
+
+        }
+    };
     }
 
     public void addVehicles(View v)
