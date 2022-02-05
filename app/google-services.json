@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "830822090510",
+    "project_id": "ibcs-carpool",
+    "storage_bucket": "ibcs-carpool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830822090510:android:19fb9cf770ce7647df395f",
+        "android_client_info": {
+          "package_name": "com.example.carpoolbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830822090510-hpm6r4jllt5ekq32h2qf8h9mrkaganur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxgRN-DYrj-ztGamFNHCIPZP1pRW4b_B0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830822090510-hpm6r4jllt5ekq32h2qf8h9mrkaganur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
