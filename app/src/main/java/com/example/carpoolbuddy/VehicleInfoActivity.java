@@ -28,7 +28,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
     private RecyclerView myRecyclerView;
     private ArrayList<Vehicle> vehList;
     private VehicleAdaptor.RecyclerViewClickListener listener;  // for RV click
-  //  private VehicleAdaptor myAdaptor;
+    private String vehicleDocID;
 
 
     @Override
@@ -55,7 +55,6 @@ public class VehicleInfoActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         if (task.isSuccessful()) {
-
                             // retrieve data from firebase and put in arraylist
                             vehList = new ArrayList<Vehicle>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -65,7 +64,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
 
                             // write content of vehList arraylist for debug
                             for(Vehicle v : vehList){
-                                System.out.println("arrayobject: "+v.getModel()+" "+v.getCapacity());
+                                System.out.println("arrayobject: "+v.getModel()+" "+v.getCapacity()+" status "+v.getOpenStatus());
                             }
 
                             // set RV to display contents from arraylist
@@ -95,6 +94,13 @@ public class VehicleInfoActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), VehicleProfileActivity.class);
             intent.putExtra("model", vehList.get(position).getModel());
             intent.putExtra("capacity", vehList.get(position).getCapacity().toString());
+            intent.putExtra("owner", vehList.get(position).getOwnerEmail());
+            intent.putExtra("type", vehList.get(position).getVehicleType());
+            intent.putExtra("rating", vehList.get(position).getRating());
+            intent.putExtra("openStatus", vehList.get(position).getOpenStatus());
+            intent.putExtra("price", vehList.get(position).getBestPrice());
+            intent.putExtra("vID", vehList.get(position).getVehicleID());
+            System.out.println("***** Open status#1: "+vehList.get(position).getOpenStatus());
             startActivity(intent);
 
         }

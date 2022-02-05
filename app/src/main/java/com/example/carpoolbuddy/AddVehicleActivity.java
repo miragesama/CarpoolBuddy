@@ -2,6 +2,9 @@ package com.example.carpoolbuddy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +14,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +38,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
+    private User myUserObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +62,10 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     }
 
-    public void addVehicle(View v)
-    {
+    // Add Vehicle to Firebase
+    public void addVehicle(View v) {
 
+        // link layout fields to parameters
         System.out.println("at addVehicle method");
         String maxCapacityString = maxCapacityField.getText().toString();
         Integer maxCapacityInt = Integer.parseInt(maxCapacityString);
@@ -63,23 +73,29 @@ public class AddVehicleActivity extends AppCompatActivity {
         String bestPriceString = bestPriceField.getText().toString();
         String myVehicleTypeString = spinnerVehicleTypeField.getSelectedItem().toString();
 
+
+        // get current User
         FirebaseUser mUser = mAuth.getCurrentUser();
 
-        Vehicle myVehicle = new Vehicle(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString);
+        // create new Vehicle object
+        Vehicle myVehicle = new Vehicle(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString, mUser.getEmail());
 
+        // write to log for debugging
+        System.out.println("myVehicle type is: " + myVehicle.getVehicleType());
+        System.out.println("myVehicle model is: " + myVehicle.getModel());
+        System.out.println("myVehicle capacity is: " + myVehicle.getCapacity());
+        System.out.println("myVehicle best price is: " + myVehicle.getBestPrice());
+        System.out.println("myVehicle email is: " + myVehicle.getOwnerEmail());
+        System.out.println("myVehicle ID is: " + myVehicle.getVehicleID());
+        System.out.println("myVehicle openStatus is: " + myVehicle.getOpenStatus());
 
-        System.out.println("myVehicle type is: "+myVehicle.getVehicleType());
-        System.out.println("myVehicle model is: "+myVehicle.getModel());
-        System.out.println("myVehicle capacity is: "+myVehicle.getCapacity());
-        System.out.println("myVehicle best price is: "+myVehicle.getBestPrice());
-
-        // Add a new document with a generated ID
+        // Add a new Vehicle document with a generated ID
         firestore.collection("Vehicles")
                 .add(myVehicle)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "DocumentSnapshot added Vehicle with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -88,5 +104,56 @@ public class AddVehicleActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+
+        // Retrieve the User object from Firestore
+        firestore.collection("User")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // retrieve data from firebase and loop to identify current user
+                            myUserObj = new User();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                myUserObj = document.toObject(User.class);
+
+                                // Found the User object
+                                if(mUser.getEmail().equals(myUserObj.getEmail()))
+                                {
+                                    System.out.println("inside If loop for: "+myUserObj.getEmail());
+                                    myUserObj.addVehicle(myVehicle);
+
+                                    System.out.println("***** docID is : "+document.getId());
+                                    updateUserAddVehicle(document.getId(), myUserObj);
+
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        // navigate to See All Vehicles
+        Intent intent = new Intent(this, VehicleInfoActivity.class);
+        startActivity(intent);
+
     }
+        // Add Vehicle to Firebase
+        public void updateUserAddVehicle(String docID, User u)
+        {
+            System.out.println("***** docID is : "+docID);
+        // Update User object to add a vehicle to the user
+        firestore.collection("User")
+                .document(docID)
+                .set(u)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+            Log.d(TAG, "DocumentSnapshot updated with ID: " + docID);
+    }
+
 }

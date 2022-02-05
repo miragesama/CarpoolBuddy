@@ -93,24 +93,25 @@ public class AuthActivity extends AppCompatActivity {
         System.out.println("Email: "+emailString);
         System.out.println("pass: "+passwordString);
 
-        mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-            {
-                if (task.isSuccessful())
-                {
-                    Log.d("SIGN UP", "Successfully signed up the user");
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    uploadData(user);
-                    updateUI(user);
+        // check if it's CIS user communicty
+        if(!emailString.contains("cis.edu"))
+            Toast.makeText(getApplicationContext(), "The app is only for CIS community, Please register with CIS email!", Toast.LENGTH_SHORT).show();
+        else {
+            mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("SIGN UP", "Successfully signed up the user");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        uploadData(user);
+                        updateUI(user);
+                    } else {
+                        Log.w("SIGN UP", "createUserWithEmail:failure", task.getException());
+                        updateUI(null);
+                    }
                 }
-                else {
-                    Log.w("SIGN UP", "createUserWithEmail:failure", task.getException());
-                    updateUI(null);
-                }
-            }
-        });
+            });
+        }
     }
 
     public void updateUI(FirebaseUser currentUser)

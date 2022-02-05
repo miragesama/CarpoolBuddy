@@ -37,7 +37,6 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
                 // this is Activity Holder of the Name and Status fields of recycler view
                 ModelText = itemView.findViewById(R.id.vecRecTextModel);
                 CapacityText = itemView.findViewById(R.id.vecRecTextCapacity);
-
             }
 
             @Override

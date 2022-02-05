@@ -34,6 +34,7 @@ public class User {
     // method to add vehicle owned by the user
     public void addVehicle(Vehicle v)
     {
+        System.out.println("***** at addVehicle method in User obj");
         ownedVehicles.add(v);
     }
 
