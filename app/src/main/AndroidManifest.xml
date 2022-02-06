@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarpoolBuddy">
         <activity
+            android:name=".RecommendedVehicleActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RateUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RateVehicleActivity"
+            android:exported="true" />
+        <activity
             android:name=".VehicleProfileActivity"
             android:exported="true" />
         <activity

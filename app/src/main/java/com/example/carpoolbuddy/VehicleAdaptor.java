@@ -57,8 +57,8 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
         @Override
     public void onBindViewHolder(@NonNull VehicleActivityHolder holder, int position) {
             Vehicle v = allVehicles.get(position);
-            holder.ModelText.setText("   Vehicle Modle: "+v.getModel());
-            holder.CapacityText.setText("Capacity: "+v.getCapacity().toString());
+            holder.ModelText.setText("    "+v.getVehicleType()+" - "+v.getModel());
+            holder.CapacityText.setText("Seats left: "+v.getCapacity().toString());
         }
 
         @Override

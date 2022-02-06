@@ -101,7 +101,7 @@
         android:id="@+id/VehicleProfileOpenButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="80dp"
         android:onClick="openCloseVehicle"
         android:text="Open / Close Vehicle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,11 +113,10 @@
         android:id="@+id/VehicleProfileBookButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="30dp"
         android:onClick="bookVehicle"
         android:text="Book Ride"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/VehicleProfilePrice" />
 
@@ -180,4 +179,16 @@
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/VehicleProfileRating" />
+
+    <Button
+        android:id="@+id/VehicleProfileRateVehicleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="30dp"
+        android:onClick="rateVehicle"
+        android:text="RATE VEHICLE"
+        app:layout_constraintStart_toEndOf="@+id/VehicleProfileBookButton"
+        app:layout_constraintTop_toBottomOf="@+id/VehicleProfilePrice" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

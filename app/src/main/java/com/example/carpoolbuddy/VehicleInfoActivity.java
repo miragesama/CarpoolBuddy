@@ -102,7 +102,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
             intent.putExtra("vID", vehList.get(position).getVehicleID());
             System.out.println("***** Open status#1: "+vehList.get(position).getOpenStatus());
             startActivity(intent);
-
+            finish();
         }
     };
     }
@@ -111,5 +111,10 @@ public class VehicleInfoActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, AddVehicleActivity.class);
         startActivity(intent);
+    }
+
+    public void clickToRefresh (View v){
+        startActivity(new Intent(this, VehicleInfoActivity.class));
+        finish();
     }
 }

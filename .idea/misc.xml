@@ -6,7 +6,10 @@
         <entry key="app/src/main/res/layout/activity_add_vehicle.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.23126550868486354" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/activity_rate_user.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/activity_rate_vehicle.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/activity_recommended_vehicle.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_vehicle_info.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/activity_vehicle_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_vehicle_rec_view.xml" value="0.335" />

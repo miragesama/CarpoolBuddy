@@ -30,7 +30,7 @@ public class Vehicle {
         this.vehicleType = someType;
         this.model = someModel;
         this.openStatus = "Open";
-        this.rating = "5 Star";
+        this.rating = "5";
     }
 
     public Vehicle(String someType, Integer someCapacity, String someModel)
@@ -43,7 +43,7 @@ public class Vehicle {
         this.capacity = someCapacity;
         this.model = someModel;
         this.openStatus = "Open";
-        this.rating = "5 Star";
+        this.rating = "5";
     }
 
     public Vehicle(String someType, Integer someCapacity, String someModel, String somePrice, String ownerEmail)
@@ -58,7 +58,7 @@ public class Vehicle {
         this.bestPrice = somePrice;
         this.ownerEmail = ownerEmail;
         this.openStatus = "Open";
-        this.rating = "5 Star";
+        this.rating = "5";
     }
 
     public Vehicle(String someType, Integer someCapacity, String someModel, String somePrice)
@@ -72,7 +72,7 @@ public class Vehicle {
         this.model = someModel;
         this.bestPrice = somePrice;
         this.openStatus = "Open";
-        this.rating = "5 Star";
+        this.rating = "5";
     }
 
     public String getVehicleType()
@@ -82,7 +82,6 @@ public class Vehicle {
 
     public String getModel()
     {
-        System.out.println("***** at getModel - vID "+this.vehicleID+" model: "+this.model);
         return this.model;
     }
 
@@ -111,7 +110,6 @@ public class Vehicle {
 
     public String getOpenStatus()
     {
-        System.out.println("***** at getOpenStatus - vID "+this.vehicleID+" booking status: "+this.openStatus);
         if(this.openStatus.equals("Open"))
             return "Open";
         else
@@ -122,12 +120,10 @@ public class Vehicle {
     {
         if(this.openStatus.equals("Open"))
         {
-            System.out.println("***** at setOpenStatus - changing to close");
             this.openStatus = "Closed";
         }
         else
         {
-            System.out.println("***** at setOpenStatus - changing to open");
             this.openStatus = "Open";
         }
 
