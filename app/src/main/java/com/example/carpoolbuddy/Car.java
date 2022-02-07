@@ -1,5 +1,12 @@
 package com.example.carpoolbuddy;
 
+/**
+ * This class is a child class of Vehicle
+ * It has additional properties for car type of vehicle, such as range
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Car extends Vehicle{
     private int range;
 

@@ -5,6 +5,17 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class is a parent class of car, electric car, bicycle, segway and helicopter
+ * It has common properties such as vehicle type, capacity, model, owner email
+ * It also has an ArrayList that contains list of user who has ever ride on the vehicle
+ * When a vehicle is newly created, its Open-For-Booking status is defauled to Open,
+ * it's rating is defaulted to 5 (highest)
+ * This class also contains several useful method such as updateOpenCloseStatus, reduceVehicleCapacity
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Vehicle {
     private String vehicleType;
     private Integer capacity;
@@ -108,6 +119,10 @@ public class Vehicle {
         return this.vehicleID;
     }
 
+    /**
+     * This method returns the Open status of the vehicle
+     * @return
+     */
     public String getOpenStatus()
     {
         if(this.openStatus.equals("Open"))
@@ -116,6 +131,9 @@ public class Vehicle {
             return "Closed";
     }
 
+    /**
+     * When this method is called, it flips the Open/Close status of the vehicle
+     */
     public void setOpenStatus()
     {
         if(this.openStatus.equals("Open"))
@@ -129,6 +147,10 @@ public class Vehicle {
 
     }
 
+    /**
+     * This method reduce the capacity by 1
+     * The method is called when a user book this vehicle
+     */
     public void setVehicleCapacityReduceOne()
     {
         this.capacity= this.capacity-1;

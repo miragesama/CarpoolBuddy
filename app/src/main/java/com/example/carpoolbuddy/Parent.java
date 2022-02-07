@@ -2,10 +2,18 @@ package com.example.carpoolbuddy;
 
 import java.util.ArrayList;
 
+/**
+ * This class is a child class of User
+ * It has additional properties for Parent type of user, such as children's UID
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Parent extends User {
     private ArrayList<String> childrenUIDS;
 
-    public Parent(Integer uid, String name, String email, String userType, double priceMultiplier, ArrayList<String> myChildUID)
+    public Parent(Integer uid, String name, String email, String userType, double priceMultiplier,
+                  ArrayList<String> myChildUID)
     {
         super(uid, name, email, userType, priceMultiplier);
         this.childrenUIDS = myChildUID;

@@ -1,10 +1,18 @@
 package com.example.carpoolbuddy;
 
+/**
+ * This class is a child class of Vehicle
+ * It has additional properties for helicopter type of vehicle, such as max altitude
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Helicopter extends Vehicle{
     private int maxAltitude;
     private int maxAirspeed;
 
-    public Helicopter(String vehicleType, int capacity, String model, String bestPrice, int maxAltitude, int maxAirspeed)
+    public Helicopter(String vehicleType, int capacity, String model, String bestPrice,
+                      int maxAltitude, int maxAirspeed)
     {
         super(vehicleType, capacity, model, bestPrice);
         this.maxAltitude = maxAltitude;

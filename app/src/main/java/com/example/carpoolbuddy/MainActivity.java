@@ -3,6 +3,9 @@ package com.example.carpoolbuddy;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * this class is not used.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

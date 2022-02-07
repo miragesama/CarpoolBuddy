@@ -29,6 +29,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class allows user to enter vehicle information for others to book.
+ * It uses a spinner item to list types of vehicles that user can add
+ * It then add the new Vehicle object onto FireBase Vehicle collection
+ * It also update the Firebase User to add this vehicle to user's Arraylist of vehicles
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class AddVehicleActivity extends AppCompatActivity {
 
     private EditText maxCapacityField;
@@ -40,6 +49,13 @@ public class AddVehicleActivity extends AppCompatActivity {
     private String TAG= "myTag";
     private User myUserObj;
 
+    /**
+     * This onCreate method connects to Firebase, retrieves current user
+     * It also set some of the layout items such as spinner values
+     * and links the input items to parameters for later user
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +78,13 @@ public class AddVehicleActivity extends AppCompatActivity {
 
     }
 
-    // Add Vehicle to Firebase
+    /**
+     * This method takes the input fields and instantiates a new Vehicle object
+     * It then add the new vehicle to Firebase
+     * It also updated current user's Firebase record to add the vehicle to its arraylist
+     *
+     * @param v
+     */
     public void addVehicle(View v) {
 
         // link layout fields to parameters
@@ -105,7 +127,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     }
                 });
 
-        // Retrieve the User object from Firestore
+        // Retrieve the User object from Firestore to add the vehicle to User's ArrayList
         firestore.collection("User")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -117,16 +139,12 @@ public class AddVehicleActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 myUserObj = document.toObject(User.class);
-
                                 // Found the User object
                                 if(mUser.getEmail().equals(myUserObj.getEmail()))
                                 {
-                                    System.out.println("inside If loop for: "+myUserObj.getEmail());
                                     myUserObj.addVehicle(myVehicle);
-
                                     System.out.println("***** docID is : "+document.getId());
                                     updateUserAddVehicle(document.getId(), myUserObj);
-
                                 }
                             }
                         } else {
@@ -134,15 +152,20 @@ public class AddVehicleActivity extends AppCompatActivity {
                         }
                     }
                 });
-        // navigate to See All Vehicles
+        // after adding the objects, navigate back to See All Vehicles
         Intent intent = new Intent(this, VehicleInfoActivity.class);
         startActivity(intent);
 
     }
-        // Add Vehicle to Firebase
+
+    /**
+     * This method is called by AddVehicle method to update the User document on Firebase
+     * with the parameter User object
+     * @param docID
+     * @param u
+     */
         public void updateUserAddVehicle(String docID, User u)
         {
-            System.out.println("***** docID is : "+docID);
         // Update User object to add a vehicle to the user
         firestore.collection("User")
                 .document(docID)

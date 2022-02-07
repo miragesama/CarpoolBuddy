@@ -20,8 +20,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class VehicleProfileActivity extends AppCompatActivity {
+/**
+ * This class allows user to enter vehicle information for others to book.
+ * It uses a spinner item to list types of vehicles that user can add
+ * It then add the new Vehicle object onto FireBase Vehicle collection
+ * It also update the Firebase User to add this vehicle to user's Arraylist of vehicles
+ * It hide Booking and Rate Vehicle button if owner is current user, else hide Open button
+ * The Book Vehicle button updates vehicle's capacity and save on firebase
+ * The Rate Vehicle button updates vehicle's rating and save on firebase
+ * The Open/close Vehicle button updates vehicle's OpenForBooking status and save on firebase
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
+public class VehicleProfileActivity extends AppCompatActivity
+{
 
+    // define local variables
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String vehicleModel;
@@ -37,8 +52,15 @@ public class VehicleProfileActivity extends AppCompatActivity {
     private Vehicle myVehObj;
     private User myUserObj;
 
+    /**
+     * This onCreate method connects to firebase, retrieve current user and link layout items to
+     * parameter for displaying vehicle information
+     * It receives vehicle information via extras from VehicleInformationActivities
+     * @param savedInstanceState
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_profile);
 
@@ -93,11 +115,17 @@ public class VehicleProfileActivity extends AppCompatActivity {
         OpenStatusText.setText(vehicleOpenStatus);
     }
 
+    /**
+     * when user click on the button, to update firebase to open or close the vehicle
+     * @param v
+     */
     public void openCloseVehicle(View v)
     {
+        // connect to firebase
         System.out.println("***** At openCloseVehicle method");
         firestore = FirebaseFirestore.getInstance();
 
+        // locate the vehicle object to update on firebase
         firestore.collection("Vehicles")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -129,91 +157,109 @@ public class VehicleProfileActivity extends AppCompatActivity {
                     }
                 });
 
+        // once done, navigate to Vehicle Info screen
+            Intent intent = new Intent(this, VehicleInfoActivity.class);
+            startActivity(intent);
     }
 
+    /**
+     * This method is to update firebase and reduce capacity by one when user book the vehicle
+     * also update User object's RiderVehicle arraylist to include the vehicleRode
+     * @param v
+     */
     public void bookVehicle(View v)
     {
         System.out.println("***** At bookVehicle method");
 
-        // Error handling if capacity is 0 then cannot book
+        // Error handling to toast message if capacity is 0 then cannot book
         if(vehicleCapacity.equals("0")) {
+            System.out.println("***** capacity is full");
             Toast.makeText(getApplicationContext(), "The capacity is full", Toast.LENGTH_SHORT).show();
         }
         else {
-            // update Capacity field of the vehicle booked
-            firestore = FirebaseFirestore.getInstance();
-            firestore.collection("Vehicles")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                // retrieve data from firebase and loop to identify current vehicle
-                                myVehObj = new Vehicle();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    myVehObj = document.toObject(Vehicle.class);
+            // Error handling to toast message if vehicle is closed then cannot book
+            if(vehicleOpenStatus.equals("Closed"))
+            {
+                Toast.makeText(getApplicationContext(), "The vehicle is closed for booking",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // update Capacity field of the vehicle booked
+                System.out.println("***** updating vehicle capacity");
+                firestore = FirebaseFirestore.getInstance();
+                firestore.collection("Vehicles")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    // retrieve data from firebase and loop to identify current vehicle
+                                    myVehObj = new Vehicle();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        myVehObj = document.toObject(Vehicle.class);
 
-                                    // Found the Vehicle object
-                                    if (vehicleID.equals(myVehObj.getVehicleID())) {
-                                        System.out.println("*** this vehicle is : " + myVehObj);
+                                        // Found the Vehicle object
+                                        if (vehicleID.equals(myVehObj.getVehicleID())) {
+                                            System.out.println("*** this vehicle is : " + myVehObj);
 
-                                        // Call method to reduce capacity
-                                        myVehObj.setVehicleCapacityReduceOne();
+                                            // Call method to reduce capacity
+                                            myVehObj.setVehicleCapacityReduceOne();
 
-                                        // call method to update this object on Firebase
-                                        System.out.println("***** vehicle doc now : " + document.getId());
-                                        updateVehicleStatus(document.getId(), myVehObj);
-                                        Toast.makeText(getApplicationContext(), "Vehicle booked!", Toast.LENGTH_SHORT).show();
+                                            // call method to update this object on Firebase
+                                            System.out.println("***** vehicle doc now : " + document.getId());
+                                            updateVehicleStatus(document.getId(), myVehObj);
+                                            Toast.makeText(getApplicationContext(), "Vehicle booked!",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
                                     }
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
                                 }
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
                             }
-                        }
-                    });
+                        });
 
-            // Retrieve the User object from Firestore
-            firestore.collection("User")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                // retrieve data from firebase and loop to identify current user
-                                myUserObj = new User();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
-                                    myUserObj = document.toObject(User.class);
+                // Retrieve the User object from Firestore
+                firestore.collection("User")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    // retrieve data from firebase and loop to identify current user
+                                    myUserObj = new User();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        myUserObj = document.toObject(User.class);
 
-                                    // Found the User object
-                                    if(mUser.getEmail().equals(myUserObj.getEmail()))
-                                    {
-                                        System.out.println("inside If loop for: "+myUserObj.getEmail());
-                                        System.out.println("the vehicle obj is : "+myUserObj);
-                                        myUserObj.addVehicleRode(myVehObj);
+                                        // Found the User object
+                                        if (mUser.getEmail().equals(myUserObj.getEmail())) {
+                                            System.out.println("inside If loop for: " + myUserObj.getEmail());
+                                            System.out.println("the vehicle obj is : " + myUserObj);
+                                            myUserObj.addVehicleRode(myVehObj);
 
-                                        System.out.println("***** docID is : "+document.getId());
-                                        updateUserAddVehicleRode(document.getId(), myUserObj);
+                                            System.out.println("***** docID is : " + document.getId());
+                                            updateUserAddVehicleRode(document.getId(), myUserObj);
+                                        }
                                     }
+                                } else {
+                                    Log.w(TAG, "Error getting documents.", task.getException());
                                 }
-                            } else {
-                                Log.w(TAG, "Error getting documents.", task.getException());
                             }
-                        }
-                    });
-            // navigate to See All Vehicles
-            //Intent intent = new Intent(this, VehicleInfoActivity.class);
-            //startActivity(intent);
-        }
+                        });
+            } // close second IF for Open status checking
+        } // close first IF for 0 capacity checking
 
         // go back to VehicleInfo
         Intent intent = new Intent(this, VehicleInfoActivity.class);
         startActivity(intent);
-        //finish();
     }
 
-    // Update Vehicle object document with updated capacity or openStatus to Firebase
+    /**
+     * Update Vehicle object document with updated capacity or openStatus to Firebase
+     * @param docID
+     * @param v
+     */
     public void updateVehicleStatus(String docID, Vehicle v)
     {
         System.out.println("***** docID is : "+docID);
@@ -230,7 +276,11 @@ public class VehicleProfileActivity extends AppCompatActivity {
         Log.d(TAG, "DocumentSnapshot updated with ID: " + docID);
     }
 
-    // Update User object with Vehicle booked to Firebase
+    /**
+     * Update User object with Vehicle booked to Firebase
+     * @param docID
+     * @param u
+     */
     public void updateUserAddVehicleRode(String docID, User u)
     {
         System.out.println("***** docID is : "+docID);
@@ -247,18 +297,17 @@ public class VehicleProfileActivity extends AppCompatActivity {
         Log.d(TAG, "DocumentSnapshot updated with ID: " + docID);
     }
 
-    // navigate to VehicleInfoActivity
+    /**
+     * navigate to Rate Vehicle screen and pass the vehicle information
+     * @param v
+     */
     public void rateVehicle(View v)
     {
-        // normal intent
-        //Intent intent = new Intent(this, RateVehicleActivity.class);
-        //startActivity(intent);
-
+        // pass the vehicle information to next intent
         Intent intent = new Intent(getApplicationContext(), RateVehicleActivity.class);
         intent.putExtra("model", vehicleModel);
         intent.putExtra("owner", vehicleOwner);
         intent.putExtra("type", vehicleType);
-        System.out.println("***** intent to rate vehicle");
         startActivity(intent);
     }
 }

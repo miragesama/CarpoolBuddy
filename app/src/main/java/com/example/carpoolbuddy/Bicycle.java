@@ -1,11 +1,19 @@
 package com.example.carpoolbuddy;
 
+/**
+ * This class is a child class of Vehicle
+ * It has additional properties for bicycle type of vehicle, such as weight capacity
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Bicycle extends Vehicle{
     private String bicycleType;
     private int weight;
     private int weightCapacity;
 
-    public Bicycle(String vehicleType, int capacity, String model, String bestPrice, String bicycleType, int weight, int weightCapacity)
+    public Bicycle(String vehicleType, int capacity, String model, String bestPrice,
+                   String bicycleType, int weight, int weightCapacity)
     {
         super(vehicleType, capacity, model, bestPrice);
         this.bicycleType = bicycleType;

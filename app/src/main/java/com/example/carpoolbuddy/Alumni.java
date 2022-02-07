@@ -1,5 +1,12 @@
 package com.example.carpoolbuddy;
 
+/**
+ * This class is a child class of User
+ * It has additional properties for Alumni type of user, such as year of graduation
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class Alumni extends User{
     private int graduateYear;
 

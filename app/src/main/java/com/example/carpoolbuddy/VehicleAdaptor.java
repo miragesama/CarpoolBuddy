@@ -11,12 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used by VehicleInfoActivity's Recycler View, it also contains the ViewHolder class
+ * It is called by VehicleInfoActivity to display the vehicle model and capacity on RecyclerView
+ * It also implements the onClick listener for user to click into a vehicle to see details
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleActivityHolder>
-    // previous extends RecyclerView.Adapter<VehicleActivityHolder>
 {
+    // defines local variable
         private ArrayList<Vehicle> allVehicles;
         private RecyclerViewClickListener listener;  // for RV click
 
+    // constructor
         public VehicleAdaptor (ArrayList<Vehicle> myVehicles, RecyclerViewClickListener listener)
         {
             allVehicles = myVehicles;
@@ -24,12 +33,16 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
             System.out.println("*** at end of VehicleAdaptor");
         }
 
+    /**
+     * This class is Activity Holder class for RecyclerView, with OnClickListener for click
+     */
     public class VehicleActivityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+            // the two fields to display on RV
             protected TextView ModelText;
             protected TextView CapacityText;
-            //private VehicleAdaptor.RecyclerViewClickListener listener;  // for RV click
 
+            // Activity Holder for RV with onClick listener
             public VehicleActivityHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this); // for RV click, bind the listener
@@ -45,16 +58,27 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
             }
         }
 
+    /**
+     * This is the ViewHolder for the recycler view
+     * @param parent
+     * @param viewType
+     * @return
+     */
         @NonNull
         @Override
-
     public VehicleActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View myView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_vehicle_rec_view, parent, false);
+            View myView = LayoutInflater.from(parent.getContext()).inflate
+                    (R.layout.activity_vehicle_rec_view, parent, false);
             VehicleActivityHolder holder = new VehicleActivityHolder(myView);
             return holder;
         }
 
-        @Override
+    /**
+     * This method pass the vehicle data to ViewHolder to display
+     * @param holder
+     * @param position
+     */
+    @Override
     public void onBindViewHolder(@NonNull VehicleActivityHolder holder, int position) {
             Vehicle v = allVehicles.get(position);
             holder.ModelText.setText("    "+v.getVehicleType()+" - "+v.getModel());
@@ -68,10 +92,10 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
     }
 
 
-    // for RV click
+    /**
+     * This is the interface for OnClick listener
+     */
     public interface RecyclerViewClickListener{
             void onClick(View v, int position);
     }
-
-
 }

@@ -21,7 +21,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This class displays all vehicles on screen using recyclerview
+ * It connects to firebase to retrieve all vehicles and save in an ArrayList
+ * It then uses recyclerView with onClickListener to display model and capacity of all vehicles
+ * User may click on a vehicle to see details, the vehicle info is passed to next intent via extras
+ * There is a Refresh button that allows users to refresh content of recyclerview after update
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class VehicleInfoActivity extends AppCompatActivity {
+    // define local variables
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
@@ -30,7 +41,11 @@ public class VehicleInfoActivity extends AppCompatActivity {
     private VehicleAdaptor.RecyclerViewClickListener listener;  // for RV click
     private String vehicleDocID;
 
-
+    /**
+     * This onCreate method connects to firebase, retrieves current user and call method
+     * getAndPopulateData() to populate vehicle data
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +55,16 @@ public class VehicleInfoActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        // link the recyclerView layout item to variable
         myRecyclerView = findViewById(R.id.recyclerView);
 
+        // call method to populate vehicle data to RV
         getAndPopulateData();
     }
 
+    /**
+     * This method populates all vehicles from firebase to recyclerview
+     */
     public void getAndPopulateData(){
 
         // retrieve all Vehicles from Firebase
@@ -53,7 +73,6 @@ public class VehicleInfoActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                         if (task.isSuccessful()) {
                             // retrieve data from firebase and put in arraylist
                             vehList = new ArrayList<Vehicle>();
@@ -62,17 +81,13 @@ public class VehicleInfoActivity extends AppCompatActivity {
                                 vehList.add(document.toObject(Vehicle.class));
                             }
 
-                            // write content of vehList arraylist for debug
-                            for(Vehicle v : vehList){
-                                System.out.println("arrayobject: "+v.getModel()+" "+v.getCapacity()+" status "+v.getOpenStatus());
-                            }
-
                             // set RV to display contents from arraylist
                             setOnClickListener();  // for RV click, initialize the listener
-                            VehicleAdaptor myAdaptor = new VehicleAdaptor(vehList, listener); // include onClick listener
+                            VehicleAdaptor myAdaptor = new VehicleAdaptor(vehList, listener);
+                            // include onClick listener
                             myRecyclerView.setAdapter(myAdaptor);
-                            myRecyclerView.setLayoutManager(new LinearLayoutManager(VehicleInfoActivity.this));
-
+                            myRecyclerView.setLayoutManager(new LinearLayoutManager
+                                    (VehicleInfoActivity.this));
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -80,7 +95,9 @@ public class VehicleInfoActivity extends AppCompatActivity {
                 });
     }
 
-    // onClickListener for RV click to show vehicle profile
+    /**
+     * This method is onClickListener for RV click to show vehicle profile
+     */
     private void setOnClickListener()
     {
         System.out.println("*** at setOnclickListener #1");
@@ -89,8 +106,8 @@ public class VehicleInfoActivity extends AppCompatActivity {
         @Override
         public void onClick (View v,int position)
         {
+            // vehicle information to pass to VehicleProfileActivity intent
             System.out.println("*** at setOnclickListner1.5");
-      //      Toast.makeText(getApplicationContext(), "TEST", Toast.LENGTH_SHORT).show();  // for debug, can be deleted
             Intent intent = new Intent(getApplicationContext(), VehicleProfileActivity.class);
             intent.putExtra("model", vehList.get(position).getModel());
             intent.putExtra("capacity", vehList.get(position).getCapacity().toString());
@@ -107,14 +124,32 @@ public class VehicleInfoActivity extends AppCompatActivity {
     };
     }
 
+    /**
+     * This method allows user to navigate to Add Vehicle screen
+     * @param v
+     */
     public void addVehicles(View v)
     {
         Intent intent = new Intent(this, AddVehicleActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * This method allows user to force refresh data in recyclerview
+     * @param v
+     */
     public void clickToRefresh (View v){
         startActivity(new Intent(this, VehicleInfoActivity.class));
         finish();
+    }
+
+    /**
+     * This method allows user to navigate to UserProfileActivity screen
+     * @param v
+     */
+    public void goToUserProfile(View v)
+    {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
     }
 }
