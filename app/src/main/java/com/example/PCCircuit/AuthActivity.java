@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -157,7 +157,7 @@ public class AuthActivity extends AppCompatActivity {
     {
         if(currentUser != null)
         {
-            Intent intent = new Intent(this, UserProfileActivity.class);
+            Intent intent = new Intent(this, CustomerProfileActivity.class);
             startActivity(intent);
         }
     }
@@ -179,7 +179,7 @@ public class AuthActivity extends AppCompatActivity {
         User myUser = new User(int_randome, emailString, userTypeString);
         System.out.println("object uid: "+myUser.getUid());
         System.out.println("object email: "+myUser.getEmail());
-        System.out.println("object type: "+myUser.getType());
+        System.out.println("object type: "+myUser.getUserType());
 
         // Add a new document with a generated ID
         firestore.collection("User")

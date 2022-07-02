@@ -1,6 +1,4 @@
-package com.example.carpoolbuddy;
-
-import android.widget.Toast;
+package com.example.PCCircuit;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +14,7 @@ import java.util.Random;
  * @author adrianlee
  * @version 1.0
  */
-public class Vehicle {
+public class Project {
     private String vehicleType;
     private Integer capacity;
     private String model;
@@ -27,12 +25,12 @@ public class Vehicle {
     private String rating;
     private ArrayList<String> riders;
 
-    public Vehicle()
+    public Project()
     {
 
     }
 
-    public Vehicle(String someType, String someModel)
+    public Project(String someType, String someModel)
     {
         Random rand = new Random();
         int int_randome = rand.nextInt(99999);
@@ -44,7 +42,7 @@ public class Vehicle {
         this.rating = "5";
     }
 
-    public Vehicle(String someType, Integer someCapacity, String someModel)
+    public Project(String someType, Integer someCapacity, String someModel)
     {
         Random rand = new Random();
         int int_randome = rand.nextInt(99999);
@@ -57,7 +55,7 @@ public class Vehicle {
         this.rating = "5";
     }
 
-    public Vehicle(String someType, Integer someCapacity, String someModel, String somePrice, String ownerEmail)
+    public Project(String someType, Integer someCapacity, String someModel, String somePrice, String ownerEmail)
     {
         Random rand = new Random();
         int int_randome = rand.nextInt(99999);
@@ -72,7 +70,7 @@ public class Vehicle {
         this.rating = "5";
     }
 
-    public Vehicle(String someType, Integer someCapacity, String someModel, String somePrice)
+    public Project(String someType, Integer someCapacity, String someModel, String somePrice)
     {
         Random rand = new Random();
         int int_randome = rand.nextInt(99999);

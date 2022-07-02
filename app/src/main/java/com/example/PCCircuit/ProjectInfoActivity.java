@@ -1,16 +1,14 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,14 +29,14 @@ import java.util.ArrayList;
  * @author adrianlee
  * @version 1.0
  */
-public class VehicleInfoActivity extends AppCompatActivity {
+public class ProjectInfoActivity extends AppCompatActivity {
     // define local variables
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
     private RecyclerView myRecyclerView;
-    private ArrayList<Vehicle> vehList;
-    private VehicleAdaptor.RecyclerViewClickListener listener;  // for RV click
+    private ArrayList<Project> projList;
+    private ProjectAdaptor.RecyclerViewClickListener listener;  // for RV click
     private String vehicleDocID;
 
     /**
@@ -49,7 +47,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vehicle_info);
+        setContentView(R.layout.activity_project_info);
 
         // retrieve current user and link Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -63,31 +61,35 @@ public class VehicleInfoActivity extends AppCompatActivity {
     }
 
     /**
-     * This method populates all vehicles from firebase to recyclerview
+     * This method populates all projects from firebase to recyclerview
      */
     public void getAndPopulateData(){
 
-        // retrieve all Vehicles from Firebase
-        firestore.collection("Vehicles")
+        // retrieve all Projects from Firebase
+        firestore.collection("Projects")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             // retrieve data from firebase and put in arraylist
-                            vehList = new ArrayList<Vehicle>();
+                            projList = new ArrayList<Project>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                vehList.add(document.toObject(Vehicle.class));
+                                //Filter to separate archived project into arraylist
+                                if(document.get("activeStatus").equals(false))
+                                {
+                                    projList.add(document.toObject(Project.class));
+                                }
                             }
 
                             // set RV to display contents from arraylist
                             setOnClickListener();  // for RV click, initialize the listener
-                            VehicleAdaptor myAdaptor = new VehicleAdaptor(vehList, listener);
+                            ProjectAdaptor myAdaptor = new ProjectAdaptor(projList, listener);
                             // include onClick listener
                             myRecyclerView.setAdapter(myAdaptor);
                             myRecyclerView.setLayoutManager(new LinearLayoutManager
-                                    (VehicleInfoActivity.this));
+                                    (ProjectInfoActivity.this));
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -101,23 +103,21 @@ public class VehicleInfoActivity extends AppCompatActivity {
     private void setOnClickListener()
     {
         System.out.println("*** at setOnclickListener #1");
-        listener = new VehicleAdaptor.RecyclerViewClickListener()
+        listener = new ProjectAdaptor.RecyclerViewClickListener()
         {
         @Override
         public void onClick (View v,int position)
         {
-            // vehicle information to pass to VehicleProfileActivity intent
+            // project information to pass to ProjectProfileActivity intent
             System.out.println("*** at setOnclickListner1.5");
-            Intent intent = new Intent(getApplicationContext(), VehicleProfileActivity.class);
-            intent.putExtra("model", vehList.get(position).getModel());
-            intent.putExtra("capacity", vehList.get(position).getCapacity().toString());
-            intent.putExtra("owner", vehList.get(position).getOwnerEmail());
-            intent.putExtra("type", vehList.get(position).getVehicleType());
-            intent.putExtra("rating", vehList.get(position).getRating());
-            intent.putExtra("openStatus", vehList.get(position).getOpenStatus());
-            intent.putExtra("price", vehList.get(position).getBestPrice());
-            intent.putExtra("vID", vehList.get(position).getVehicleID());
-            System.out.println("***** Open status#1: "+vehList.get(position).getOpenStatus());
+            Intent intent = new Intent(getApplicationContext(), ProjectProfileActivity.class);
+            intent.putExtra("model", projList.get(position).getModel());
+            intent.putExtra("capacity", projList.get(position).getCapacity().toString());
+            intent.putExtra("owner", projList.get(position).getOwnerEmail());
+            intent.putExtra("rating", projList.get(position).getRating());
+            intent.putExtra("openStatus", projList.get(position).getOpenStatus());
+            intent.putExtra("price", projList.get(position).getBestPrice());
+            System.out.println("***** Open status#1: "+projList.get(position).getOpenStatus());
             startActivity(intent);
             finish();
         }
@@ -128,9 +128,9 @@ public class VehicleInfoActivity extends AppCompatActivity {
      * This method allows user to navigate to Add Vehicle screen
      * @param v
      */
-    public void addVehicles(View v)
+    public void addProject(View v)
     {
-        Intent intent = new Intent(this, AddVehicleActivity.class);
+        Intent intent = new Intent(this, AddProjectActivity.class);
         startActivity(intent);
     }
 
@@ -139,7 +139,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
      * @param v
      */
     public void clickToRefresh (View v){
-        startActivity(new Intent(this, VehicleInfoActivity.class));
+        startActivity(new Intent(this, ProjectInfoActivity.class));
         finish();
     }
 
@@ -149,7 +149,7 @@ public class VehicleInfoActivity extends AppCompatActivity {
      */
     public void goToUserProfile(View v)
     {
-        Intent intent = new Intent(this, UserProfileActivity.class);
+        Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
     }
 }

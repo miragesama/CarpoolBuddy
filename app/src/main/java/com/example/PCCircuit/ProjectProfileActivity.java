@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
  * @author adrianlee
  * @version 1.0
  */
-public class VehicleProfileActivity extends AppCompatActivity
+public class ProjectProfileActivity extends AppCompatActivity
 {
 
     // define local variables
@@ -49,7 +49,7 @@ public class VehicleProfileActivity extends AppCompatActivity
     private Integer vehicleID;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
-    private Vehicle myVehObj;
+    private Project myVehObj;
     private User myUserObj;
 
     /**
@@ -133,10 +133,10 @@ public class VehicleProfileActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             // retrieve data from firebase and loop to identify current vehicle
-                            myVehObj = new Vehicle();
+                            myVehObj = new Project();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                myVehObj = document.toObject(Vehicle.class);
+                                myVehObj = document.toObject(Project.class);
 
                                 // Found the Vehicle object
                                 if(vehicleID.equals(myVehObj.getVehicleID()))
@@ -158,7 +158,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                 });
 
         // once done, navigate to Vehicle Info screen
-            Intent intent = new Intent(this, VehicleInfoActivity.class);
+            Intent intent = new Intent(this, ProjectInfoActivity.class);
             startActivity(intent);
     }
 
@@ -194,10 +194,10 @@ public class VehicleProfileActivity extends AppCompatActivity
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     // retrieve data from firebase and loop to identify current vehicle
-                                    myVehObj = new Vehicle();
+                                    myVehObj = new Project();
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
-                                        myVehObj = document.toObject(Vehicle.class);
+                                        myVehObj = document.toObject(Project.class);
 
                                         // Found the Vehicle object
                                         if (vehicleID.equals(myVehObj.getVehicleID())) {
@@ -236,7 +236,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                                         if (mUser.getEmail().equals(myUserObj.getEmail())) {
                                             System.out.println("inside If loop for: " + myUserObj.getEmail());
                                             System.out.println("the vehicle obj is : " + myUserObj);
-                                            myUserObj.addVehicleRode(myVehObj);
+                                            //myUserObj.addVehicleRode(myVehObj);
 
                                             System.out.println("***** docID is : " + document.getId());
                                             updateUserAddVehicleRode(document.getId(), myUserObj);
@@ -251,7 +251,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         } // close first IF for 0 capacity checking
 
         // go back to VehicleInfo
-        Intent intent = new Intent(this, VehicleInfoActivity.class);
+        Intent intent = new Intent(this, ProjectInfoActivity.class);
         startActivity(intent);
     }
 
@@ -260,7 +260,7 @@ public class VehicleProfileActivity extends AppCompatActivity
      * @param docID
      * @param v
      */
-    public void updateVehicleStatus(String docID, Vehicle v)
+    public void updateVehicleStatus(String docID, Project v)
     {
         System.out.println("***** docID is : "+docID);
         // Update Vehicle object with parameter object
@@ -303,11 +303,11 @@ public class VehicleProfileActivity extends AppCompatActivity
      */
     public void rateVehicle(View v)
     {
-        // pass the vehicle information to next intent
+        /* pass the vehicle information to next intent
         Intent intent = new Intent(getApplicationContext(), RateVehicleActivity.class);
         intent.putExtra("model", vehicleModel);
         intent.putExtra("owner", vehicleOwner);
         intent.putExtra("type", vehicleType);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

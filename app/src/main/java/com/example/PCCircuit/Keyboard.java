@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 /**
  * This class is a child class of Vehicle
@@ -7,13 +7,13 @@ package com.example.carpoolbuddy;
  * @author adrianlee
  * @version 1.0
  */
-public class Bicycle extends Vehicle{
+public class Keyboard extends Project {
     private String bicycleType;
     private int weight;
     private int weightCapacity;
 
-    public Bicycle(String vehicleType, int capacity, String model, String bestPrice,
-                   String bicycleType, int weight, int weightCapacity)
+    public Keyboard(String vehicleType, int capacity, String model, String bestPrice,
+                    String bicycleType, int weight, int weightCapacity)
     {
         super(vehicleType, capacity, model, bestPrice);
         this.bicycleType = bicycleType;

@@ -1,18 +1,15 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,10 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class allows user to enter vehicle information for others to book.
  * It uses a spinner item to list types of vehicles that user can add
@@ -38,7 +31,7 @@ import java.util.Map;
  * @author adrianlee
  * @version 1.0
  */
-public class AddVehicleActivity extends AppCompatActivity {
+public class AddProjectActivity extends AppCompatActivity {
 
     private EditText maxCapacityField;
     private EditText vehicleModelField;
@@ -48,6 +41,7 @@ public class AddVehicleActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
     private User myUserObj;
+    private String customerEmail;
 
     /**
      * This onCreate method connects to Firebase, retrieves current user
@@ -100,20 +94,20 @@ public class AddVehicleActivity extends AppCompatActivity {
         FirebaseUser mUser = mAuth.getCurrentUser();
 
         // create new Vehicle object
-        Vehicle myVehicle = new Vehicle(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString, mUser.getEmail());
+        Project myProject = new Project(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString, mUser.getEmail());
 
-        // write to log for debugging
+        /* write to log for debugging
         System.out.println("myVehicle type is: " + myVehicle.getVehicleType());
         System.out.println("myVehicle model is: " + myVehicle.getModel());
         System.out.println("myVehicle capacity is: " + myVehicle.getCapacity());
         System.out.println("myVehicle best price is: " + myVehicle.getBestPrice());
         System.out.println("myVehicle email is: " + myVehicle.getOwnerEmail());
         System.out.println("myVehicle ID is: " + myVehicle.getVehicleID());
-        System.out.println("myVehicle openStatus is: " + myVehicle.getOpenStatus());
+        System.out.println("myVehicle openStatus is: " + myVehicle.getOpenStatus());*/
 
         // Add a new Vehicle document with a generated ID
         firestore.collection("Vehicles")
-                .add(myVehicle)
+                .add(myProject)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -127,7 +121,7 @@ public class AddVehicleActivity extends AppCompatActivity {
                     }
                 });
 
-        // Retrieve the User object from Firestore to add the vehicle to User's ArrayList
+        // Retrieve the User object from Firestore to add the project to User's ArrayList
         firestore.collection("User")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -142,9 +136,10 @@ public class AddVehicleActivity extends AppCompatActivity {
                                 // Found the User object
                                 if(mUser.getEmail().equals(myUserObj.getEmail()))
                                 {
-                                    myUserObj.addVehicle(myVehicle);
+                                    myUserObj.addProject(myProject);
                                     System.out.println("***** docID is : "+document.getId());
-                                    updateUserAddVehicle(document.getId(), myUserObj);
+                                    updateUserAddProject(document.getId(), myUserObj);
+                                    updateCustomerAddProject(customerEmail, myProject);
                                 }
                             }
                         } else {
@@ -152,8 +147,8 @@ public class AddVehicleActivity extends AppCompatActivity {
                         }
                     }
                 });
-        // after adding the objects, navigate back to See All Vehicles
-        Intent intent = new Intent(this, VehicleInfoActivity.class);
+        // after adding the objects, navigate back to See All Projects
+        Intent intent = new Intent(this, ProjectInfoActivity.class);
         startActivity(intent);
 
     }
@@ -164,7 +159,7 @@ public class AddVehicleActivity extends AppCompatActivity {
      * @param docID
      * @param u
      */
-        public void updateUserAddVehicle(String docID, User u)
+        public void updateUserAddProject(String docID, User u)
         {
         // Update User object to add a vehicle to the user
         firestore.collection("User")
@@ -178,5 +173,11 @@ public class AddVehicleActivity extends AppCompatActivity {
                 });
             Log.d(TAG, "DocumentSnapshot updated with ID: " + docID);
     }
+
+        public void updateCustomerAddProject(String customerEmail, Project p)
+        {
+            //Update firebase for customer add project to arraylist
+
+        }
 
 }

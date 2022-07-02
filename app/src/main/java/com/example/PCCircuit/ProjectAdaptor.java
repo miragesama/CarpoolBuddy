@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is used by VehicleInfoActivity's Recycler View, it also contains the ViewHolder class
@@ -19,31 +18,31 @@ import java.util.List;
  * @author adrianlee
  * @version 1.0
  */
-public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleActivityHolder>
+public class ProjectAdaptor extends RecyclerView.Adapter<ProjectAdaptor.ProjectActivityHolder>
 {
     // defines local variable
-        private ArrayList<Vehicle> allVehicles;
+        private ArrayList<Project> allProjects;
         private RecyclerViewClickListener listener;  // for RV click
 
     // constructor
-        public VehicleAdaptor (ArrayList<Vehicle> myVehicles, RecyclerViewClickListener listener)
+        public ProjectAdaptor(ArrayList<Project> myProjects, RecyclerViewClickListener listener)
         {
-            allVehicles = myVehicles;
+            allProjects = myProjects;
             this.listener = listener; // for RV click
-            System.out.println("*** at end of VehicleAdaptor");
+            System.out.println("*** at end of ProjectAdaptor");
         }
 
     /**
      * This class is Activity Holder class for RecyclerView, with OnClickListener for click
      */
-    public class VehicleActivityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ProjectActivityHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             // the two fields to display on RV
             protected TextView ModelText;
             protected TextView CapacityText;
 
             // Activity Holder for RV with onClick listener
-            public VehicleActivityHolder(@NonNull View itemView) {
+            public ProjectActivityHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this); // for RV click, bind the listener
 
@@ -66,10 +65,10 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
      */
         @NonNull
         @Override
-    public VehicleActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View myView = LayoutInflater.from(parent.getContext()).inflate
                     (R.layout.activity_vehicle_rec_view, parent, false);
-            VehicleActivityHolder holder = new VehicleActivityHolder(myView);
+            ProjectActivityHolder holder = new ProjectActivityHolder(myView);
             return holder;
         }
 
@@ -79,8 +78,8 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
      * @param position
      */
     @Override
-    public void onBindViewHolder(@NonNull VehicleActivityHolder holder, int position) {
-            Vehicle v = allVehicles.get(position);
+    public void onBindViewHolder(@NonNull ProjectActivityHolder holder, int position) {
+            Project v = allProjects.get(position);
             holder.ModelText.setText("    "+v.getVehicleType()+" - "+v.getModel());
             holder.CapacityText.setText("Seats left: "+v.getCapacity().toString());
         }
@@ -88,7 +87,7 @@ public class VehicleAdaptor extends RecyclerView.Adapter<VehicleAdaptor.VehicleA
         @Override
     public int getItemCount()
     {
-        return allVehicles.size();
+        return allProjects.size();
     }
 
 

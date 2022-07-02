@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy
+package com.example.PCCircuit
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

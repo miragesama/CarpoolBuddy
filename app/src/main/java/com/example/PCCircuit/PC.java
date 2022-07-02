@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 /**
  * This class is a child class of Vehicle
@@ -7,10 +7,10 @@ package com.example.carpoolbuddy;
  * @author adrianlee
  * @version 1.0
  */
-public class Car extends Vehicle{
+public class PC extends Project {
     private int range;
 
-    public Car(String vehicleType, int capacity, String model, String bestPrice, int range)
+    public PC(String vehicleType, int capacity, String model, String bestPrice, int range)
     {
         super(vehicleType, capacity, model, bestPrice);
         this.range = range;

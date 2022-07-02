@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "112573441810",
+    "project_id": "pccircuit-8348f",
+    "storage_bucket": "pccircuit-8348f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112573441810:android:7f151215adae700924f5cb",
+        "android_client_info": {
+          "package_name": "com.example.PCCircuit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112573441810-7clg5fjbpvv2so6ct38o5va8gd98r2ra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHqX2qck8YRSK8oIi1Mvy_gs7Uuh_Y_AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112573441810-7clg5fjbpvv2so6ct38o5va8gd98r2ra.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +13,7 @@ import android.view.View;
  * @author adrianlee
  * @version 1.0
  */
-public class RateUserActivity extends AppCompatActivity {
+public class RateStaffActivity extends AppCompatActivity {
 
     /**
      * This is standard onCreate method
@@ -31,7 +31,7 @@ public class RateUserActivity extends AppCompatActivity {
      */
     public void submitRiderRating(View v)
     {
-        Intent intent = new Intent(this, UserProfileActivity.class);
+        Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.carpoolbuddy">
+    package="com.example.PCCircuit">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,31 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarpoolBuddy">
         <activity
-            android:name=".RecommendedVehicleActivity"
+            android:name="com.example.PCCircuit.RecommendedProjectActivity"
             android:exported="true" />
         <activity
-            android:name=".RateUserActivity"
+            android:name="com.example.PCCircuit.RateStaffActivity"
             android:exported="true" />
         <activity
-            android:name=".RateVehicleActivity"
+            android:name="com.example.PCCircuit.ProjectProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".VehicleProfileActivity"
+            android:name="com.example.PCCircuit.AddProjectActivity"
             android:exported="true" />
         <activity
-            android:name=".AddVehicleActivity"
+            android:name="com.example.PCCircuit.ProjectInfoActivity"
             android:exported="true" />
         <activity
-            android:name=".VehicleInfoActivity"
+            android:name="com.example.PCCircuit.CustomerProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".UserProfileActivity"
+            android:name="com.example.PCCircuit.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".AuthActivity"
+            android:name="com.example.PCCircuit.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="Carpool Buddy"
+        android:text="CIRCUIT"
         android:textColor="#673AB7"
         android:textSize="34sp"
         android:textStyle="bold"

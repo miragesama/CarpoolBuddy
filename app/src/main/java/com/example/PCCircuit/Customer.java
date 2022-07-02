@@ -1,4 +1,4 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import java.util.ArrayList;
 
@@ -9,14 +9,13 @@ import java.util.ArrayList;
  * @author adrianlee
  * @version 1.0
  */
-public class Student extends User{
+public class Customer extends User{
     private String graduateYear;
     private ArrayList<String> parentUIDs;
 
-    public Student(Integer uid, String name, String email, String userType, double priceMultiplier,
-                   String graduateYear, ArrayList<String> parentUIDs)
+    public Customer(Integer uid, String name, String email, String userType, double priceMultiplier,
+                    String graduateYear, ArrayList<String> parentUIDs)
     {
-        super(uid, name, email, userType, priceMultiplier);
         this.graduateYear = graduateYear;
         this.parentUIDs = parentUIDs;
     }

@@ -1,14 +1,12 @@
-package com.example.carpoolbuddy;
+package com.example.PCCircuit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,10 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 /**
  * This class displays user's basic information on screen after user logged in
@@ -33,7 +27,7 @@ import java.util.ArrayList;
  * @author adrianlee
  * @version 1.0
  */
-public class UserProfileActivity extends AppCompatActivity {
+public class CustomerProfileActivity extends AppCompatActivity {
 
     // define local variables
     private FirebaseAuth mAuth;
@@ -84,9 +78,9 @@ public class UserProfileActivity extends AppCompatActivity {
                                 if(mUser.getEmail().equals(myUserObj.getEmail()))
                                 {
                                     // display user information on screen
-                                    user_type.setText(myUserObj.getType());
+                                    user_type.setText(myUserObj.getUserType());
                                     user_name.setText(myUserObj.getName());
-                                    user_rating.setText(myUserObj.getRider_rating().toString());
+                                    //user_rating.setText(myUserObj.getRider_rating().toString());
                                 }
                             }
                         } else {
@@ -113,7 +107,7 @@ public class UserProfileActivity extends AppCompatActivity {
      */
    public void seeVehicles(View v)
    {
-       Intent intent = new Intent(this, VehicleInfoActivity.class);
+       Intent intent = new Intent(this, ProjectInfoActivity.class);
        startActivity(intent);
    }
 
@@ -123,7 +117,7 @@ public class UserProfileActivity extends AppCompatActivity {
      */
    public void rateUserButton(View v)
    {
-       Intent intent = new Intent(this, RateUserActivity.class);
+       Intent intent = new Intent(this, RateStaffActivity.class);
        startActivity(intent);
    }
 
@@ -133,7 +127,7 @@ public class UserProfileActivity extends AppCompatActivity {
      */
    public void addVehicleButton(View v)
    {
-       Intent intent = new Intent(this, AddVehicleActivity.class);
+       Intent intent = new Intent(this, AddProjectActivity.class);
        startActivity(intent);
    }
 
@@ -143,7 +137,7 @@ public class UserProfileActivity extends AppCompatActivity {
      */
     public void recommendVehicleButton(View v)
     {
-        Intent intent = new Intent(this, RecommendedVehicleActivity.class);
+        Intent intent = new Intent(this, RecommendedProjectActivity.class);
         startActivity(intent);
     }
 }
