@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,16 +42,20 @@ public class ProjectProfileActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String vehicleModel;
-    private String vehicleCapacity;
-    private String vehicleOwner;
+    private String projectID;
+    private String customerName;
     private String vehicleType;
     private String vehiclePrice;
     private String vehicleRating;
     private String vehicleOpenStatus;
+    private String userEmail;
+    private String projectType;
+    private String spreadUrl;
+    private String buildDate;
     private Integer vehicleID;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
-    private Project myVehObj;
+    private Project myProj;
     private User myUserObj;
 
     /**
@@ -62,93 +68,81 @@ public class ProjectProfileActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vehicle_profile);
+        setContentView(R.layout.activity_project_profile);
 
         // retrieve current user
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
         // link layout items to parameter
-        TextView nameText = findViewById(R.id.VehicleProfileMdel);
-        TextView capacityText = findViewById(R.id.VehicleProfileCapacity);
-        TextView ownerText = findViewById(R.id.VehicleProfileOwner);
-        TextView typeText = findViewById(R.id.VehicleProfileType);
-        TextView priceText = findViewById(R.id.VehicleProfilePrice);
-        TextView ratingText = findViewById(R.id.VehicleProfileRating);
-        TextView OpenStatusText = findViewById(R.id.VehicleProfileOpenStatus);
-        Button bookingButton = findViewById(R.id.VehicleProfileBookButton);
-        Button openButton = findViewById(R.id.VehicleProfileOpenButton);
-        Button ratingButton = findViewById(R.id.VehicleProfileRateVehicleButton);
+        TextView ProjectIDText = findViewById(R.id.PP_ProjectID);
+        TextView CustomerNameText = findViewById(R.id.PP_CustomerName);
+        TextView ProjectTypeText = findViewById(R.id.PP_ProjectType);
+        EditText DetailsLinkEdit = (EditText) findViewById(R.id.PP_DetailsURL);
+        EditText BuildDateEdit = (EditText) findViewById(R.id.PP_BuildDate);
+  //      Button bookingButton = findViewById(R.id.VehicleProfileBookButton);
+  //      Button openButton = findViewById(R.id.VehicleProfileOpenButton);
+  //      Button ratingButton = findViewById(R.id.VehicleProfileRateVehicleButton);
 
         // Bundle the data from RecyclerView
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            vehicleModel = extras.getString("model");
-            vehicleCapacity = extras.getString("capacity");
-            vehicleOwner = extras.getString("owner");
-            vehicleType = extras.getString("type");
-            vehiclePrice = extras.getString("price");
-            vehicleRating = extras.getString("rating");
-            vehicleOpenStatus = extras.getString("openStatus");
-            vehicleID = extras.getInt("vID");
-            System.out.println("***** Open status#2: "+vehicleOpenStatus);
+            //vehicleModel = extras.getString("model");
+            projectID = extras.getString("projectID");
+            customerName = extras.getString("customerName");
+            userEmail = extras.getString("customerName");
+            projectType = extras.getString("projectType");
+            spreadUrl = extras.getString("spreadURL");
+            System.out.println("***** getExtra spreadUrl: "+spreadUrl);
+            buildDate = extras.getString("buildDate");
+            System.out.println("***** end of getExtra");
         }
 
-        // Hide Booking button if owner is current user, else hide Open button
+
         FirebaseUser mUser = mAuth.getCurrentUser();
-        if(mUser.getEmail().equals(vehicleOwner))
-        {
-            bookingButton.setVisibility(View.GONE);
-            ratingButton.setVisibility(View.GONE);
-        }
-        else{
-            openButton.setVisibility(View.GONE);
-        }
 
         // Show data on screen
-        nameText.setText(vehicleModel);
-        capacityText.setText(vehicleCapacity);
-        ownerText.setText(vehicleOwner);
-        typeText.setText(vehicleType);
-        priceText.setText(vehiclePrice);
-        ratingText.setText(vehicleRating);
-        OpenStatusText.setText(vehicleOpenStatus);
+        ProjectIDText.setText(projectID);
+        CustomerNameText.setText(customerName);
+        ProjectTypeText.setText(projectType);
+        DetailsLinkEdit.setText(spreadUrl, TextView.BufferType.EDITABLE);
+        BuildDateEdit.setText(buildDate);
     }
 
     /**
      * when user click on the button, to update firebase to open or close the vehicle
      * @param v
      */
-    public void openCloseVehicle(View v)
+    public void archiveProject(View v)  //openclosevehicle
     {
         // connect to firebase
-        System.out.println("***** At openCloseVehicle method");
+        System.out.println("***** At archiveProject method");
         firestore = FirebaseFirestore.getInstance();
 
-        // locate the vehicle object to update on firebase
-        firestore.collection("Vehicles")
+        // locate the object to update on firebase
+        firestore.collection("Project")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             // retrieve data from firebase and loop to identify current vehicle
-                            myVehObj = new Project();
+                            myProj = new Project();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                myVehObj = document.toObject(Project.class);
+                                myProj = document.toObject(Project.class);
 
-                                // Found the Vehicle object
-                                if(vehicleID.equals(myVehObj.getVehicleID()))
+                                // Found the object
+                                if(projectID.equals(myProj.getProjectIDString()))
                                 {
-                                    System.out.println("inside If loop found VID : "+myVehObj.getVehicleID());
+                                    System.out.println("inside If loop found PID : "+myProj.getProjectID());
 
-                                    // Switch Open/Close status
-                                    myVehObj.setOpenStatus();
+                                    // Switch archive status
+                                    myProj.setActiveStatus();
 
                                     // call method to update this object on Firebase
-                                    System.out.println("***** vehicle doc now : "+document.getId());
-                                    updateVehicleStatus(document.getId(), myVehObj);
+                                    System.out.println("***** pj doc now : "+document.getId());
+                                    updateProjectStatus(document.getId(), myProj);
                                 }
                             }
                         } else {
@@ -156,6 +150,7 @@ public class ProjectProfileActivity extends AppCompatActivity
                         }
                     }
                 });
+        Toast.makeText(getApplicationContext(), "Project archived!", Toast.LENGTH_SHORT).show();
 
         // once done, navigate to Vehicle Info screen
             Intent intent = new Intent(this, ProjectInfoActivity.class);
@@ -167,49 +162,46 @@ public class ProjectProfileActivity extends AppCompatActivity
      * also update User object's RiderVehicle arraylist to include the vehicleRode
      * @param v
      */
-    public void bookVehicle(View v)
+    public void saveProject(View v)   //bookvehicle
     {
-        System.out.println("***** At bookVehicle method");
-
-        // Error handling to toast message if capacity is 0 then cannot book
-        if(vehicleCapacity.equals("0")) {
-            System.out.println("***** capacity is full");
-            Toast.makeText(getApplicationContext(), "The capacity is full", Toast.LENGTH_SHORT).show();
+        System.out.println("***** At saveProject method");
+        EditText DetailsLinkEdit = (EditText) findViewById(R.id.PP_DetailsURL);
+        EditText BuildDateEdit = (EditText) findViewById(R.id.PP_BuildDate);
+        String newURL = DetailsLinkEdit.getText().toString();
+        String newDate = BuildDateEdit.getText().toString();
+        if(newURL.trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "Spreadsheet link cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
         }
-        else {
-            // Error handling to toast message if vehicle is closed then cannot book
-            if(vehicleOpenStatus.equals("Closed"))
-            {
-                Toast.makeText(getApplicationContext(), "The vehicle is closed for booking",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                // update Capacity field of the vehicle booked
-                System.out.println("***** updating vehicle capacity");
+        if(newDate.trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "Build date cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
                 firestore = FirebaseFirestore.getInstance();
-                firestore.collection("Vehicles")
+                firestore.collection("Project")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     // retrieve data from firebase and loop to identify current vehicle
-                                    myVehObj = new Project();
+                                    myProj = new Project();
+                                    System.out.println("***** inside firestore checkpoint1, project: "+projectID);
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d(TAG, document.getId() + " => " + document.getData());
-                                        myVehObj = document.toObject(Project.class);
+                                        myProj = document.toObject(Project.class);
 
-                                        // Found the Vehicle object
-                                        if (vehicleID.equals(myVehObj.getVehicleID())) {
-                                            System.out.println("*** this vehicle is : " + myVehObj);
+                                        // Found the current Project object
+                                        if (projectID.equals(myProj.getProjectIDString())) {
+                                            System.out.println("*** updating fields of curr proj : " + myProj);
 
-                                            // Call method to reduce capacity
-                                            myVehObj.setVehicleCapacityReduceOne();
+                                            myProj.setSpreadUrl(newURL);
+                                            myProj.setbuildDate(newDate);
 
                                             // call method to update this object on Firebase
-                                            System.out.println("***** vehicle doc now : " + document.getId());
-                                            updateVehicleStatus(document.getId(), myVehObj);
-                                            Toast.makeText(getApplicationContext(), "Vehicle booked!",
+                                            updateProjectStatus(document.getId(), myProj);
+                                            Toast.makeText(getApplicationContext(), "Project updated!",
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -219,38 +211,9 @@ public class ProjectProfileActivity extends AppCompatActivity
                             }
                         });
 
-                // Retrieve the User object from Firestore
-                firestore.collection("User")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    // retrieve data from firebase and loop to identify current user
-                                    myUserObj = new User();
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                        myUserObj = document.toObject(User.class);
+        Toast.makeText(getApplicationContext(), "Project saved!", Toast.LENGTH_SHORT).show();
 
-                                        // Found the User object
-                                        if (mUser.getEmail().equals(myUserObj.getEmail())) {
-                                            System.out.println("inside If loop for: " + myUserObj.getEmail());
-                                            System.out.println("the vehicle obj is : " + myUserObj);
-                                            //myUserObj.addVehicleRode(myVehObj);
-
-                                            System.out.println("***** docID is : " + document.getId());
-                                            updateUserAddVehicleRode(document.getId(), myUserObj);
-                                        }
-                                    }
-                                } else {
-                                    Log.w(TAG, "Error getting documents.", task.getException());
-                                }
-                            }
-                        });
-            } // close second IF for Open status checking
-        } // close first IF for 0 capacity checking
-
-        // go back to VehicleInfo
+        // go back to ProjectInfo
         Intent intent = new Intent(this, ProjectInfoActivity.class);
         startActivity(intent);
     }
@@ -260,11 +223,10 @@ public class ProjectProfileActivity extends AppCompatActivity
      * @param docID
      * @param v
      */
-    public void updateVehicleStatus(String docID, Project v)
+    public void updateProjectStatus(String docID, Project v)
     {
-        System.out.println("***** docID is : "+docID);
         // Update Vehicle object with parameter object
-        firestore.collection("Vehicles")
+        firestore.collection("Project")
                 .document(docID)
                 .set(v)
                 .addOnFailureListener(new OnFailureListener() {
@@ -301,13 +263,63 @@ public class ProjectProfileActivity extends AppCompatActivity
      * navigate to Rate Vehicle screen and pass the vehicle information
      * @param v
      */
-    public void rateVehicle(View v)
+    public void deleteProject(View v)  //ratevehicle
     {
-        /* pass the vehicle information to next intent
-        Intent intent = new Intent(getApplicationContext(), RateVehicleActivity.class);
-        intent.putExtra("model", vehicleModel);
-        intent.putExtra("owner", vehicleOwner);
-        intent.putExtra("type", vehicleType);
-        startActivity(intent);*/
+        // connect to firebase
+        System.out.println("***** At archiveProject method");
+        firestore = FirebaseFirestore.getInstance();
+
+        // locate the object to update on firebase
+        firestore.collection("Project")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // retrieve data from firebase and loop to identify current vehicle
+                            myProj = new Project();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                myProj = document.toObject(Project.class);
+
+                                // Found the object
+                                if(projectID.equals(myProj.getProjectIDString()))
+                                {
+                                    System.out.println("inside If loop found PID : "+myProj.getProjectID());
+
+                                    myProj.setActiveStatus();
+                                    updateProjectStatus(document.getId(), myProj);
+
+                                    // delete data
+                                    firestore.collection("Project")
+                                            .document()
+                                            .delete()
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error updating document", e);
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        Toast.makeText(getApplicationContext(), "Project deleted!", Toast.LENGTH_SHORT).show();
+
+        // once done, navigate to Vehicle Info screen
+        Intent intent = new Intent(this, ProjectInfoActivity.class);
+        startActivity(intent);
+    }
+
+    public void goButton(View v)
+    {
+        EditText DetailsLinkEdit = (EditText) findViewById(R.id.PP_DetailsURL);
+        String myURL = DetailsLinkEdit.getText().toString();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(myURL));
+        startActivity(intent);
     }
 }

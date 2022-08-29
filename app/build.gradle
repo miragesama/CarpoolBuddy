@@ -8,7 +8,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.carpoolbuddy"
+        applicationId "com.example.PCCircuit"
         minSdk 28
         targetSdk 31
         versionCode 1

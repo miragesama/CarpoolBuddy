@@ -15,15 +15,14 @@ import java.util.Random;
  * @version 1.0
  */
 public class Project {
-    private String vehicleType;
-    private Integer capacity;
-    private String model;
-    private String bestPrice;
+    private String projectType;
+    private String customerName;  // actually customer email
+    private String buildDate;
+    private String spreadUrl;
     private String ownerEmail;
-    private Integer vehicleID;
-    private String openStatus;
-    private String rating;
-    private ArrayList<String> riders;
+    private String projectID;
+    private String activeStatus;
+    private Integer rating;
 
     public Project()
     {
@@ -32,130 +31,118 @@ public class Project {
 
     public Project(String someType, String someModel)
     {
-        Random rand = new Random();
-        int int_randome = rand.nextInt(99999);
-
-        this.vehicleID = int_randome;
-        this.vehicleType = someType;
-        this.model = someModel;
-        this.openStatus = "Open";
-        this.rating = "5";
+        this.projectID = "00000";
+        this.projectType = someType;
+        this.buildDate = someModel;
+        this.activeStatus = "Active";
+        //this.rating = "5";*/
     }
 
-    public Project(String someType, Integer someCapacity, String someModel)
+    public Project(String someType, String someCapacity, String someModel, String myProjectID)
     {
-        Random rand = new Random();
-        int int_randome = rand.nextInt(99999);
+        this.projectID = myProjectID;
+        this.projectType = someType;
+        this.customerName = someCapacity;
+        this.buildDate = someModel;
+        this.activeStatus = "Active";
+        //this.rating = "5";*/
+        }
 
-        this.vehicleID = int_randome;
-        this.vehicleType = someType;
-        this.capacity = someCapacity;
-        this.model = someModel;
-        this.openStatus = "Open";
-        this.rating = "5";
-    }
-
-    public Project(String someType, Integer someCapacity, String someModel, String somePrice, String ownerEmail)
+    //Project(myVehicleTypeString, maxCapacityString, vehicleModelString, bestPriceString, mUser.getEmail(), myProjectID);
+    public Project(String someType, String someCapacity, String someModel, String somePrice, String ownerEmail, String myProjectID)
     {
-        Random rand = new Random();
-        int int_randome = rand.nextInt(99999);
-
-        this.vehicleID = int_randome;
-        this.vehicleType = someType;
-        this.capacity = someCapacity;
-        this.model = someModel;
-        this.bestPrice = somePrice;
+        this.projectID = myProjectID;
+        this.projectType = someType;
+        this.customerName = someCapacity;
+        this.buildDate = someModel;
+        this.spreadUrl = somePrice;
         this.ownerEmail = ownerEmail;
-        this.openStatus = "Open";
-        this.rating = "5";
+        this.activeStatus = "Active";
+        //this.rating = "5";*/
     }
 
-    public Project(String someType, Integer someCapacity, String someModel, String somePrice)
+    public String getProjectType()
     {
-        Random rand = new Random();
-        int int_randome = rand.nextInt(99999);
-
-        this.vehicleID = int_randome;
-        this.vehicleType = someType;
-        this.capacity = someCapacity;
-        this.model = someModel;
-        this.bestPrice = somePrice;
-        this.openStatus = "Open";
-        this.rating = "5";
+        return this.projectType;
     }
 
-    public String getVehicleType()
+    public String getBuildDate()
     {
-        return this.vehicleType;
+        return this.buildDate;
     }
 
-    public String getModel()
+    public String getcustomerName()
     {
-        return this.model;
+        return this.customerName;
     }
-
-    public Integer getCapacity()
+    public String getSpreadUrl()
     {
-        return this.capacity;
-    }
-    public String getBestPrice()
-    {
-        return this.bestPrice;
+        return this.spreadUrl;
     }
     public String getOwnerEmail()
     {
         return this.ownerEmail;
     }
 
-    public String getRating()
+    /*public String getRating()
     {
         return this.rating;
+    }*/
+
+    public String getProjectID()
+    {
+        return this.projectID;
     }
 
-    public Integer getVehicleID()
-    {
-        return this.vehicleID;
+    public String getProjectIDString() {
+       // return Integer.toString(this.projectID);
+        return this.projectID;
     }
 
     /**
      * This method returns the Open status of the vehicle
      * @return
      */
-    public String getOpenStatus()
+    public String getActiveStatus()
     {
-        if(this.openStatus.equals("Open"))
-            return "Open";
+        if(this.activeStatus.equals("Active"))
+            return "Active";
         else
-            return "Closed";
+            return "Archived";
     }
 
     /**
      * When this method is called, it flips the Open/Close status of the vehicle
      */
-    public void setOpenStatus()
+    public void setActiveStatus()
     {
-        if(this.openStatus.equals("Open"))
+        if(this.activeStatus.equals("Active"))
         {
-            this.openStatus = "Closed";
+            this.activeStatus = "Archived";
         }
         else
         {
-            this.openStatus = "Open";
+            this.activeStatus = "Active";
         }
 
+    }
+
+    public void setSpreadUrl(String updatedUrl)
+    {
+        this.spreadUrl = updatedUrl;
+    }
+
+    public void setbuildDate(String updatedBuildDate)
+    {
+        this.buildDate = updatedBuildDate;
     }
 
     /**
      * This method reduce the capacity by 1
      * The method is called when a user book this vehicle
      */
-    public void setVehicleCapacityReduceOne()
+    public void setRating(Integer myRating)
     {
-        this.capacity= this.capacity-1;
-    }
-
-    public void setVehicleModel(String myVehicleModel)
-    {
-        this.vehicleType = myVehicleModel;
+        this.rating = myRating;
     }
 }

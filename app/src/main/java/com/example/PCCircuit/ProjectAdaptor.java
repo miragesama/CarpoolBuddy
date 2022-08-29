@@ -80,8 +80,9 @@ public class ProjectAdaptor extends RecyclerView.Adapter<ProjectAdaptor.ProjectA
     @Override
     public void onBindViewHolder(@NonNull ProjectActivityHolder holder, int position) {
             Project v = allProjects.get(position);
-            holder.ModelText.setText("    "+v.getVehicleType()+" - "+v.getModel());
-            holder.CapacityText.setText("Seats left: "+v.getCapacity().toString());
+            holder.ModelText.setText("    "+v.getProjectType()+" - "+v.getProjectID());
+            holder.CapacityText.setText("Customer: "+v.getcustomerName().toString());
+            //holder.CapacityText.setText("Project info: "+v.getSpreadUrl().toString());
         }
 
         @Override

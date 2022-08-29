@@ -10,29 +10,19 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Customer extends User{
-    private String graduateYear;
-    private ArrayList<String> parentUIDs;
+    private String email;
+    private String userName;
+    private String userID;
+    private String userType;
 
-    public Customer(Integer uid, String name, String email, String userType, double priceMultiplier,
-                    String graduateYear, ArrayList<String> parentUIDs)
+    public Customer(String emailString, String userName, String userIDString, String userTypeString)
     {
-        this.graduateYear = graduateYear;
-        this.parentUIDs = parentUIDs;
+        this.email = emailString;
+        this.userID = userIDString;
+        this.userType = userTypeString;
+        this.userName = userName;
     }
 
-    public String getGraduateYear() {
-        return graduateYear;
-    }
 
-    public void setGraduateYear(String graduateYear) {
-        this.graduateYear = graduateYear;
-    }
 
-    public ArrayList<String> getParentUIDs() {
-        return parentUIDs;
-    }
-
-    public void setParentUIDs(ArrayList<String> parentUIDs) {
-        this.parentUIDs = parentUIDs;
-    }
 }

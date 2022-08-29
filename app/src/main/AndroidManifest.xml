@@ -12,28 +12,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarpoolBuddy">
         <activity
-            android:name="com.example.PCCircuit.RecommendedProjectActivity"
+            android:name=".ArchivedProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerContact"
+            android:exported="false" />
+        <activity
+            android:name=".ArchivedProjectAdaptor"
+            android:exported="false" />
+        <activity
+            android:name=".CustomProjectProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomProjectAdaptor"
+            android:exported="false" />
+        <activity
+            android:name=".CustomProjectInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ArchivedInfoActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.RateStaffActivity"
+            android:name=".RateStaffActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.ProjectProfileActivity"
+            android:name=".ProjectProfileActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.AddProjectActivity"
+            android:name=".AddProjectActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.ProjectInfoActivity"
+            android:name=".ProjectInfoActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.CustomerProfileActivity"
+            android:name=".StaffProfileActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.MainActivity"
+            android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.PCCircuit.AuthActivity"
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

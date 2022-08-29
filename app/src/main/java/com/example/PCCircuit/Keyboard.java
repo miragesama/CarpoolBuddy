@@ -12,7 +12,7 @@ public class Keyboard extends Project {
     private int weight;
     private int weightCapacity;
 
-    public Keyboard(String vehicleType, int capacity, String model, String bestPrice,
+    public Keyboard(String vehicleType, String capacity, String model, String bestPrice,
                     String bicycleType, int weight, int weightCapacity)
     {
         super(vehicleType, capacity, model, bestPrice);

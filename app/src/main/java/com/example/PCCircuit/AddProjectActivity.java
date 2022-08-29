@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +37,7 @@ public class AddProjectActivity extends AppCompatActivity {
     private EditText maxCapacityField;
     private EditText vehicleModelField;
     private EditText bestPriceField;
+    private EditText projectIdField;
     private Spinner spinnerVehicleTypeField;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
@@ -53,15 +55,15 @@ public class AddProjectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_vehicle);
-
+        setContentView(R.layout.activity_add_project);
+        System.out.println("***************** oncreate check");
         // retrieve current user
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // define spinner for Vehicle Type drop down
+        // define spinner for Project Type drop down
         spinnerVehicleTypeField = findViewById(R.id.AVA_Spinner);
-        ArrayAdapter<CharSequence>adapter=ArrayAdapter.createFromResource(this, R.array.VehicleType, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence>adapter=ArrayAdapter.createFromResource(this, R.array.ProjectType, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerVehicleTypeField.setAdapter(adapter);
 
@@ -69,6 +71,7 @@ public class AddProjectActivity extends AppCompatActivity {
         maxCapacityField = findViewById(R.id.AVA_capacity);
         vehicleModelField = findViewById(R.id.AVA_model);
         bestPriceField = findViewById(R.id.AVA_best_price);
+        projectIdField = findViewById(R.id.AP_myProjectID);
 
     }
 
@@ -79,45 +82,54 @@ public class AddProjectActivity extends AppCompatActivity {
      *
      * @param v
      */
-    public void addVehicle(View v) {
-
+    public void addProject(View v) {
+        System.out.println("****************** begin add project");
         // link layout fields to parameters
-        System.out.println("at addVehicle method");
         String maxCapacityString = maxCapacityField.getText().toString();
-        Integer maxCapacityInt = Integer.parseInt(maxCapacityString);
         String vehicleModelString = vehicleModelField.getText().toString();
         String bestPriceString = bestPriceField.getText().toString();
         String myVehicleTypeString = spinnerVehicleTypeField.getSelectedItem().toString();
+        String myProjectID = projectIdField.getText().toString();
 
+        //every field must be entered
+        if(myProjectID.trim().equals("")){
+            Toast.makeText(getApplicationContext(), "Project ID cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(maxCapacityString.trim().equals("")){
+            Toast.makeText(getApplicationContext(), "Customer Name cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(vehicleModelString.trim().equals("")){
+            Toast.makeText(getApplicationContext(), "Build date cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(bestPriceString.trim().equals("")){
+            Toast.makeText(getApplicationContext(), "Spreadsheet link cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // get current User
         FirebaseUser mUser = mAuth.getCurrentUser();
 
         // create new Vehicle object
-        Project myProject = new Project(myVehicleTypeString, maxCapacityInt, vehicleModelString, bestPriceString, mUser.getEmail());
+        Project myProject = new Project(myVehicleTypeString, maxCapacityString, vehicleModelString, bestPriceString, mUser.getEmail(), myProjectID);
+        System.out.println("*************my proj " + myProject.getProjectType() + maxCapacityString + vehicleModelString + bestPriceString + mUser.getEmail());
 
-        /* write to log for debugging
-        System.out.println("myVehicle type is: " + myVehicle.getVehicleType());
-        System.out.println("myVehicle model is: " + myVehicle.getModel());
-        System.out.println("myVehicle capacity is: " + myVehicle.getCapacity());
-        System.out.println("myVehicle best price is: " + myVehicle.getBestPrice());
-        System.out.println("myVehicle email is: " + myVehicle.getOwnerEmail());
-        System.out.println("myVehicle ID is: " + myVehicle.getVehicleID());
-        System.out.println("myVehicle openStatus is: " + myVehicle.getOpenStatus());*/
-
-        // Add a new Vehicle document with a generated ID
-        firestore.collection("Vehicles")
+        // Add a new project document with a generated ID
+        firestore.collection("Project")
                 .add(myProject)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added Vehicle with ID: " + documentReference.getId());
+                        Log.d(TAG, "DocumentSnapshot added Project with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(getApplicationContext(), "Error creating project: "+e, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -141,9 +153,11 @@ public class AddProjectActivity extends AppCompatActivity {
                                     updateUserAddProject(document.getId(), myUserObj);
                                     updateCustomerAddProject(customerEmail, myProject);
                                 }
+                                Toast.makeText(getApplicationContext(), "Project added successfully!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
+                            Toast.makeText(getApplicationContext(), "Error creating Project!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

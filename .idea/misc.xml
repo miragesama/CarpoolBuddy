@@ -3,6 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_add_project.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_add_vehicle.xml" value="0.4244791666666667" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_archive_rec_view.xml" value="0.19959473150962512" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_archived_profile.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_archived_project.xml" value="0.17119565217391305" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_auth.xml" value="0.4244791666666667" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_custom_project_info.xml" value="0.17617753623188406" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_custom_project_profile.xml" value="0.22708333333333333" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_customer_contact.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_customer_info_rec_view.xml" value="0.17617753623188406" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_customer_profile.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_main.xml" value="0.20643363728470113" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_project_info.xml" value="0.25" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_project_profile.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_rate_user.xml" value="0.17119565217391305" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_recommended_vehicle.xml" value="0.17119565217391305" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_staff_profile.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_user_profile.xml" value="0.4" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_vehicle_profile.xml" value="0.4244791666666667" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/activity_vehicle_rec_view.xml" value="0.17119565217391305" />
+        <entry key="..\:/Users/Adrian Lee/StudioProjects/CarpoolBuddy/app/src/main/res/layout/layout.xml" value="0.17119565217391305" />
         <entry key="app/src/main/res/layout/activity_add_vehicle.xml" value="0.2296875" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.23126550868486354" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24270833333333333" />

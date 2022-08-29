@@ -10,7 +10,7 @@ package com.example.PCCircuit;
 public class PC extends Project {
     private int range;
 
-    public PC(String vehicleType, int capacity, String model, String bestPrice, int range)
+    public PC(String vehicleType, String capacity, String model, String bestPrice, int range)
     {
         super(vehicleType, capacity, model, bestPrice);
         this.range = range;

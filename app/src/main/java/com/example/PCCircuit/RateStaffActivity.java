@@ -31,7 +31,7 @@ public class RateStaffActivity extends AppCompatActivity {
      */
     public void submitRiderRating(View v)
     {
-        Intent intent = new Intent(this, CustomerProfileActivity.class);
+        Intent intent = new Intent(this, StaffProfileActivity.class);
         startActivity(intent);
     }
 }

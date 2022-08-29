@@ -17,7 +17,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class CustomerProfileActivity extends AppCompatActivity {
+/**
+ * This class displays user's basic information on screen after user logged in
+ * It also have several buttons for user to use
+ * One button is to see all vehicles, another is to directly add a vehicle
+ * It also allows the user to rate a rider, and see a list of recommended vehicles
+ * There is also a Sign Out button on this screen
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
+public class StaffProfileActivity extends AppCompatActivity {
+
     // define local variables
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -35,7 +46,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_profile);
+        setContentView(R.layout.activity_staff_profile);
 
         // connections to firebase
         mAuth = FirebaseAuth.getInstance();
@@ -43,7 +54,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
 
         // show currently signed in user name
-        user_email = (TextView) this.findViewById(R.id.custEmail);
+        user_email = (TextView) this.findViewById(R.id.UP_email);
         user_email.setText(mUser.getEmail());
 
         // retrieve user information from firebase
@@ -78,42 +89,42 @@ public class CustomerProfileActivity extends AppCompatActivity {
      * This method allows user to click to signout
      * @param v
      */
-    public void signOut(View v)
-    {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, AuthActivity.class);
-        startActivity(intent);
-    }
+   public void signOut(View v)
+   {
+       FirebaseAuth.getInstance().signOut();
+       Intent intent = new Intent(this, AuthActivity.class);
+       startActivity(intent);
+   }
 
     /**
      * This method allows user to navigate to VehicleInfoActivity
      * @param v
      */
-    public void seeProjects(View v)
-    {
-        Intent intent = new Intent(this, CustomProjectInfoActivity.class);
-        startActivity(intent);
-    }
+   public void seeVehicles(View v)
+   {
+       Intent intent = new Intent(this, ProjectInfoActivity.class);
+       startActivity(intent);
+   }
 
     /**
      * This method allows user to navigate to Rate User screen
      * @param v
      */
-    public void rateUserButton(View v)
-    {
-        Intent intent = new Intent(this, RateStaffActivity.class);
-        startActivity(intent);
-    }
+   public void rateUserButton(View v)
+   {
+       Intent intent = new Intent(this, RateStaffActivity.class);
+       startActivity(intent);
+   }
 
     /**
      * This method allows user to navigate to Add Vehicle screen
      * @param v
      */
-    public void contactUsButton(View v)
-    {
-        Intent intent = new Intent(this, CustomerContact.class);
-        startActivity(intent);
-    }
+   public void addProjectButton(View v)
+   {
+       Intent intent = new Intent(this, AddProjectActivity.class);
+       startActivity(intent);
+   }
 
     /**
      * This method allows user to navigate to Recommend Vehicle screen
@@ -124,6 +135,5 @@ public class CustomerProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ArchivedInfoActivity.class);
         startActivity(intent);
     }
-
 
 }

@@ -1,23 +1,24 @@
 package com.example.PCCircuit;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+        import androidx.annotation.NonNull;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+        import com.google.android.gms.tasks.OnCompleteListener;
+        import com.google.android.gms.tasks.Task;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.QueryDocumentSnapshot;
+        import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+        import java.util.ArrayList;
 
 /**
  * This class displays all vehicles on screen using recyclerview
@@ -29,15 +30,16 @@ import java.util.ArrayList;
  * @author adrianlee
  * @version 1.0
  */
-public class ProjectInfoActivity extends AppCompatActivity {
+public class CustomProjectInfoActivity extends AppCompatActivity {
     // define local variables
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
     private RecyclerView myRecyclerView;
     private ArrayList<Project> projList;
-    private ProjectAdaptor.RecyclerViewClickListener listener;  // for RV click
-    private String vehicleDocID;
+    private CustomProjectAdaptor.RecyclerViewClickListener listener;  // for RV click
+    private String currUserEmail;
 
     /**
      * This onCreate method connects to firebase, retrieves current user and call method
@@ -47,14 +49,16 @@ public class ProjectInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_info);
+        setContentView(R.layout.activity_custom_project_info);
 
         // retrieve current user and link Firebase
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        currUserEmail = mUser.getEmail();
 
         // link the recyclerView layout item to variable
-        myRecyclerView = findViewById(R.id.recyclerView);
+        myRecyclerView = findViewById(R.id.CP_RV);
 
         // call method to populate vehicle data to RV
         getAndPopulateData();
@@ -64,7 +68,7 @@ public class ProjectInfoActivity extends AppCompatActivity {
      * This method populates all projects from firebase to recyclerview
      */
     public void getAndPopulateData(){
-        System.out.println("*** at getAndPopulateData");
+        System.out.println("*** at CustomProject getAndPopulateData");
         // retrieve all Projects from Firebase
         firestore.collection("Project")
                 .get()
@@ -74,23 +78,28 @@ public class ProjectInfoActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // retrieve data from firebase and put in arraylist
                             projList = new ArrayList<Project>();
-                            System.out.println("*** at firebase loop");
+                            System.out.println("*** at CustomProject firebase loop");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 //Filter to separate archived project into arraylist
                                 if(document.get("activeStatus").equals("Active"))
                                 {
-                                    projList.add(document.toObject(Project.class));
+                                    if(document.get("customerName").equals(currUserEmail))
+                                    {
+                                        System.out.println("*** at CustomProject nested if");
+                                        projList.add(document.toObject(Project.class));
+                                    }
+
                                 }
                             }
 
                             // set RV to display contents from arraylist
                             setOnClickListener();  // for RV click, initialize the listener
-                            ProjectAdaptor myAdaptor = new ProjectAdaptor(projList, listener);
+                            CustomProjectAdaptor myAdaptor = new CustomProjectAdaptor(projList, listener);
                             // include onClick listener
                             myRecyclerView.setAdapter(myAdaptor);
                             myRecyclerView.setLayoutManager(new LinearLayoutManager
-                                    (ProjectInfoActivity.this));
+                                    (CustomProjectInfoActivity.this));
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -103,26 +112,22 @@ public class ProjectInfoActivity extends AppCompatActivity {
      */
     private void setOnClickListener()
     {
-        System.out.println("*** at setOnclickListener #1");
-        listener = new ProjectAdaptor.RecyclerViewClickListener()
-        {
-        @Override
-        public void onClick (View v,int position)
-        {
-            // project information to pass to ProjectProfileActivity intent
-            System.out.println("*** at setOnclickListner1.5");
-            Intent intent = new Intent(getApplicationContext(), ProjectProfileActivity.class);
-            intent.putExtra("buildDate", projList.get(position).getBuildDate());
-            intent.putExtra("projectID", projList.get(position).getProjectID());
-            intent.putExtra("customerName", projList.get(position).getcustomerName());
-            intent.putExtra("userEmail", projList.get(position).getOwnerEmail());
-            intent.putExtra("projectType", projList.get(position).getProjectType());
-            intent.putExtra("spreadURL", projList.get(position).getSpreadUrl());
-           // System.out.println("***** Open status#1: "+projList.get(position).getOpenStatus());
-            startActivity(intent);
-            finish();
-        }
-    };
+        System.out.println("*** at CustomProject setOnclickListener #1");
+        listener = new CustomProjectAdaptor.RecyclerViewClickListener() {
+            @Override
+            public void onClick (View v, int position)
+            {
+                // project information to pass to ProjectProfileActivity intent
+                System.out.println("*** at CustomProject setOnclickListner1.5");
+                Intent intent = new Intent(getApplicationContext(), CustomProjectProfileActivity.class);
+                intent.putExtra("buildDate", projList.get(position).getBuildDate());
+                intent.putExtra("projectID", projList.get(position).getProjectID().toString());
+                intent.putExtra("projectType", projList.get(position).getProjectType());
+                intent.putExtra("spreadURL", projList.get(position).getSpreadUrl());
+                startActivity(intent);
+                finish();
+            }
+        };
     }
 
     /**
@@ -140,7 +145,7 @@ public class ProjectInfoActivity extends AppCompatActivity {
      * @param v
      */
     public void clickToRefresh (View v){
-        startActivity(new Intent(this, ProjectInfoActivity.class));
+        startActivity(new Intent(this, CustomProjectInfoActivity.class));
         finish();
     }
 
@@ -150,7 +155,7 @@ public class ProjectInfoActivity extends AppCompatActivity {
      */
     public void goToUserProfile(View v)
     {
-        Intent intent = new Intent(this, StaffProfileActivity.class);
+        Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
     }
 }

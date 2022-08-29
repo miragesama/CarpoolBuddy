@@ -1,5 +1,7 @@
 package com.example.PCCircuit;
 
+import java.util.ArrayList;
+
 /**
  * This class is a child class of User
  * It has additional properties for Teacher type of User, such as title
@@ -8,18 +10,20 @@ package com.example.PCCircuit;
  * @version 1.0
  */
 public class Staff extends User {
-    private String inSchoolTitle;
+    private String email;
+    private String userName;
+    private String userID;
+    private String userType;
+    private int rating;
 
-    public Staff(Integer uid, String name, String email, String userType)
+
+    public Staff(String emailString, String userName, String userIDString, String userTypeString)
     {
-        super(uid, name, email, userType);
+        this.email = emailString;
+        this.userName = userName;
+        this.userID = userIDString;
+        this.userType = userTypeString;
+        this.rating = 5;
     }
 
-    public String getInSchoolTitle() {
-        return inSchoolTitle;
-    }
-
-    public void setInSchoolTitle(String inSchoolTitle) {
-        this.inSchoolTitle = inSchoolTitle;
-    }
 }

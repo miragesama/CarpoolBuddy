@@ -1,5 +1,7 @@
 package com.example.PCCircuit;
 
+import static android.app.ProgressDialog.show;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -34,14 +37,15 @@ import java.util.Random;
  * @author adrianlee
  * @version 1.0
  */
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     // define local parameters
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private EditText emailField;
     private EditText passwordField;
-    private Spinner spinnerUserTypeField;
+    protected String userType = "Staff";
+    protected Spinner spinnerUserTypeField;
     private String TAG= "myTag";
 
     /**
@@ -66,10 +70,11 @@ public class AuthActivity extends AppCompatActivity {
 
         // define spinner for User Type drop down
         spinnerUserTypeField = findViewById(R.id.AA_spinner);
-        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource
-                (this, R.array.UserType, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this, R.array.UserType, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerUserTypeField.setAdapter(adapter);
+
+        userType = spinnerUserTypeField.getSelectedItem().toString();
 
         // link layout fields to variables
         emailField = findViewById(R.id.editTextEmail);
@@ -87,7 +92,11 @@ public class AuthActivity extends AppCompatActivity {
         String emailString = emailField.getText().toString();
         String passwordString = passwordField.getText().toString();
         System.out.println(String.format("email: %s and password: %s", emailString, passwordString));
-
+        if (emailString.trim().equals("") || passwordString.trim().equals("")) {
+            Toast.makeText(AuthActivity.this, "Please input a valid email and password",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         // connect to firebase to authenticate the user login info
         mAuth.signInWithEmailAndPassword(emailString, passwordString)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -125,40 +134,37 @@ public class AuthActivity extends AppCompatActivity {
         System.out.println("Email: "+emailString);
         System.out.println("pass: "+passwordString);
 
-        // check if it's CIS email address, if not, toast error
-        if(!emailString.contains("cis.edu"))
-            Toast.makeText(getApplicationContext(), "The app is only for CIS community, Please register with CIS email!", Toast.LENGTH_SHORT).show();
+        // check if it's valid email address, if not, toast error
+        if(!emailString.contains("@"))
+            Toast.makeText(getApplicationContext(), "Please enter a valid email address", Toast.LENGTH_SHORT).show();
         else {
-            // if it's CIS user, then create the new user account and add to Firebase document
             mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Log.d("SIGN UP", "Successfully signed up the user");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        uploadData(user);
+                        String userIDString = user.getUid();
+                        Log.d("AuthActivity", "UserType"+ userType);
+
+                        if(userType.equals("Customer")){
+                            User newUser = new User(userIDString, emailString, "Customer");
+                            firestore.collection("User").document(user.getUid()).set(newUser);
+                        }
+                        if(userType.equals("Staff")){
+                            User newUser = new User(userIDString, emailString, "Staff");
+                            firestore.collection("User").document(user.getUid()).set(newUser);
+                        }
                         updateUI(user);
-                    } else {
+                    }
+                    else {
                         Log.w("SIGN UP", "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getApplicationContext(), "Signup failure: The password is invalid", Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 }
             });
-        }
-    }
 
-    /**
-     * This method is called by signUp and signIn method to navigate to User Profile screen
-     * once user signed in
-     *
-     * @param currentUser
-     */
-    public void updateUI(FirebaseUser currentUser)
-    {
-        if(currentUser != null)
-        {
-            Intent intent = new Intent(this, CustomerProfileActivity.class);
-            startActivity(intent);
         }
     }
 
@@ -172,11 +178,11 @@ public class AuthActivity extends AppCompatActivity {
         String userTypeString = spinnerUserTypeField.getSelectedItem().toString();
 
         // random generator for userID
-        Random rand = new Random();
-        int int_randome = rand.nextInt(99999);
+        //Random rand = new Random();
+        //int int_randome = rand.nextInt(99999);
 
         // create the User object
-        User myUser = new User(int_randome, emailString, userTypeString);
+        User myUser = new User(currentUser.getUid(), emailString, userTypeString);
         System.out.println("object uid: "+myUser.getUid());
         System.out.println("object email: "+myUser.getEmail());
         System.out.println("object type: "+myUser.getUserType());
@@ -197,4 +203,41 @@ public class AuthActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * This method is called by signUp and signIn method to navigate to User Profile screen
+     * once user signed in
+     *
+     * @param currentUser
+     */
+    public void updateUI(FirebaseUser currentUser)
+    {
+        if(currentUser != null) {
+            //spinnerUserTypeField.setOnItemSelectedListener(this);
+            //String myUserType = spinnerUserTypeField.getSelectedItem().toString();
+
+            if (userType.equals("Staff")) {
+                Intent intent = new Intent(this, StaffProfileActivity.class);
+                startActivity(intent);
+                Log.w("Auth Activity", "Intent to StaffProfileActivity");
+            } else {
+                Intent intent = new Intent(this, CustomerProfileActivity.class);
+                startActivity(intent);
+                Log.w("Auth Activity", "Intent to CustomProfileActivity");
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String myText = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), myText, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
 }

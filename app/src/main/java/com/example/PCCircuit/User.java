@@ -12,45 +12,39 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class User {
-    private Integer uid;
+    private String uid;
     private String email;
-    private String name = "Someone";
+    private String userName = "Someone";
     private String userType;
-    private String password;
     private ArrayList<Project> ownedProjects = new ArrayList<>();
+    private int avg_rating;
 
     public User()
     {
 
     }
 
-    public User(Integer someUid, String someEmail, String someUserType)
+    public User(String someUid, String someEmail, String someUserType)
     {
         this.uid = someUid;
         this.email = someEmail;
         this.userType = someUserType;
+        this.avg_rating = 5;
     }
 
-    public User(Integer someUid, String someEmail, String someName, String someUserType)
+    public User(String someUid, String someEmail, String someName, String someUserType)
     {
         this.uid = someUid;
         this.email = someEmail;
-        this.name = someName;
+        this.userName = someName;
         this.userType = someUserType;
+        this.avg_rating = 5;
     }
 
-    /**
-     * method to add vehicle owned by the user
-     * @param p
-     */
-    public void addProject(Project p)
-    {
-        System.out.println("***** at addVehicle method in User obj");
-        ownedProjects.add(p);
-    }
+
 
     /**
-     * method to return vehicles owned by the user
+     * method to return projects owned by the user
      * @return
      */
     public ArrayList<Project> getProject()
@@ -59,11 +53,14 @@ public class User {
     }
 
     /**
-     * method to return vehicles rode by the user
+     * method to add project by staff
      * @return
      */
+    public void addProject(Project myProject){
+        this.ownedProjects.add(myProject);
+    }
 
-    public Integer getUid(){
+    public String getUid(){
         return this.uid;
     }
 
@@ -75,6 +72,18 @@ public class User {
         return this.userType;
     }
 
-    public String getName() { return this.name;}
+    public String getName() { return this.userName;}
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUserID(String userID) {
+        this.uid = uid;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
 }
