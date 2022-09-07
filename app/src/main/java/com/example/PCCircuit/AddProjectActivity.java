@@ -24,10 +24,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
- * This class allows user to enter vehicle information for others to book.
- * It uses a spinner item to list types of vehicles that user can add
- * It then add the new Vehicle object onto FireBase Vehicle collection
- * It also update the Firebase User to add this vehicle to user's Arraylist of vehicles
+ * This class allows user to enter project information .
+ * It then add the new project object onto FireBase Project collection
+ * It also update the Firebase User to add this project to user's Arraylist of projects
  *
  * @author adrianlee
  * @version 1.0
@@ -76,9 +75,9 @@ public class AddProjectActivity extends AppCompatActivity {
     }
 
     /**
-     * This method takes the input fields and instantiates a new Vehicle object
-     * It then add the new vehicle to Firebase
-     * It also updated current user's Firebase record to add the vehicle to its arraylist
+     * This method takes the input fields and instantiates a new project object
+     * It then add the new project to Firebase
+     * It also updated current user's Firebase record to add the project to its arraylist
      *
      * @param v
      */
@@ -112,9 +111,8 @@ public class AddProjectActivity extends AppCompatActivity {
         // get current User
         FirebaseUser mUser = mAuth.getCurrentUser();
 
-        // create new Vehicle object
+        // create new Project object
         Project myProject = new Project(myVehicleTypeString, maxCapacityString, vehicleModelString, bestPriceString, mUser.getEmail(), myProjectID);
-        System.out.println("*************my proj " + myProject.getProjectType() + maxCapacityString + vehicleModelString + bestPriceString + mUser.getEmail());
 
         // Add a new project document with a generated ID
         firestore.collection("Project")
@@ -168,7 +166,7 @@ public class AddProjectActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is called by AddVehicle method to update the User document on Firebase
+     * This method is called by AddProject method to update the User document on Firebase
      * with the parameter User object
      * @param docID
      * @param u

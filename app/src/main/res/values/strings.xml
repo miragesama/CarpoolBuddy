@@ -6,7 +6,7 @@
     </string-array>
 
     <string-array name="UserType">
-        <item>Customer</item>
         <item>Staff</item>
+        <item>Customer</item>
     </string-array>
 </resources>

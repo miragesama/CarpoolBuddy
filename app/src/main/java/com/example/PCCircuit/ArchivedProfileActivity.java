@@ -19,7 +19,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
+/**
+ * This class displays all archived projects on screen using recyclerview
+ * It connects to firebase to retrieve all archived projects and save in an ArrayList
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class ArchivedProfileActivity extends AppCompatActivity {
 
     // define local variables

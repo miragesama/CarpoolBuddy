@@ -19,20 +19,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.rpc.context.AttributeContext;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * This class allows user to login or signup to the CarpoolBuddy system
- * It uses a spinner to show list of user types such as student, parent, teacher or alumni
+ * This class allows user to login or signup to the PC Circuit system
+ * It uses a spinner to show list of user types such as Customer and Staff
  * For existing user login, it authenticates the user with Firebase
- * For new user signup, it checks if user's email domain is cis.edu as this system is only
- * for CIS users. Then it add the user to Firebase as well as User document
+ * For new user signup, it validates the email address entered and
+ * password. Then it add the user to Firebase as well as User document
  *
  * @author adrianlee
  * @version 1.0
@@ -131,11 +136,16 @@ public class AuthActivity extends AppCompatActivity implements AdapterView.OnIte
         // receive information entered by user
         String emailString = emailField.getText().toString();
         String passwordString = passwordField.getText().toString();
-        System.out.println("Email: "+emailString);
-        System.out.println("pass: "+passwordString);
+
+        //regular expression for validating email address
+        String regex = "^[A-Za-z0-9+_.-]+@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$";
+
+        // use Pattern and Matcher class to validate email address
+        Pattern myPattern = Pattern.compile(regex);
+        Matcher myMatcher = myPattern.matcher(emailString);
 
         // check if it's valid email address, if not, toast error
-        if(!emailString.contains("@"))
+        if(!myMatcher.matches())
             Toast.makeText(getApplicationContext(), "Please enter a valid email address", Toast.LENGTH_SHORT).show();
         else {
             mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -164,7 +174,6 @@ public class AuthActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 }
             });
-
         }
     }
 
@@ -176,10 +185,6 @@ public class AuthActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         String emailString = currentUser.getEmail();
         String userTypeString = spinnerUserTypeField.getSelectedItem().toString();
-
-        // random generator for userID
-        //Random rand = new Random();
-        //int int_randome = rand.nextInt(99999);
 
         // create the User object
         User myUser = new User(currentUser.getUid(), emailString, userTypeString);
@@ -227,6 +232,7 @@ public class AuthActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

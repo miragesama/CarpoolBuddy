@@ -1,8 +1,7 @@
 package com.example.PCCircuit;
 
 /**
- * This class is a child class of Vehicle
- * It has additional properties for bicycle type of vehicle, such as weight capacity
+ * This class is a child class of Project
  *
  * @author adrianlee
  * @version 1.0

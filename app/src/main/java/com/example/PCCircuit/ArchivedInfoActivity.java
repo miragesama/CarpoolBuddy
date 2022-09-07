@@ -20,10 +20,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 /**
- * This class displays all vehicles on screen using recyclerview
- * It connects to firebase to retrieve all vehicles and save in an ArrayList
- * It then uses recyclerView with onClickListener to display model and capacity of all vehicles
- * User may click on a vehicle to see details, the vehicle info is passed to next intent via extras
+ * This class displays all projects on screen using recyclerview
+ * It connects to firebase to retrieve all projects and save in an ArrayList
+ * It then uses recyclerView with onClickListener to display all projects
+ * User may click on a project to see details, the project info is passed to next intent via extras
  * There is a Refresh button that allows users to refresh content of recyclerview after update
  *
  * @author adrianlee
@@ -99,7 +99,7 @@ public class ArchivedInfoActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is onClickListener for RV click to show vehicle profile
+     * This method is onClickListener for RV click to show project profile
      */
     private void setOnClickListener() {
         System.out.println("*** at setOnclickListener #1");

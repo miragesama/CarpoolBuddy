@@ -11,8 +11,8 @@ package com.example.PCCircuit;
         import java.util.ArrayList;
 
 /**
- * This class is used by VehicleInfoActivity's Recycler View, it also contains the ViewHolder class
- * It is called by VehicleInfoActivity to display the vehicle model and capacity on RecyclerView
+ * This class is used by CustomerProjectInfoActivity's Recycler View, it also contains the ViewHolder class
+ * It is called by CustomerProjectInfoActivity to display the projects on RecyclerView
  * It also implements the onClick listener for user to click into a vehicle to see details
  *
  * @author adrianlee
@@ -57,12 +57,6 @@ public class CustomProjectAdaptor extends RecyclerView.Adapter<CustomProjectAdap
         }
     }
 
-    /**
-     * This is the ViewHolder for the recycler view
-     * @param parent
-     * @param viewType
-     * @return
-     */
     @NonNull
     @Override
     public CustomProjectAdaptor.CustomProjectActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,11 +66,6 @@ public class CustomProjectAdaptor extends RecyclerView.Adapter<CustomProjectAdap
         return holder;
     }
 
-    /**
-     * This method pass the vehicle data to ViewHolder to display
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(@NonNull CustomProjectAdaptor.CustomProjectActivityHolder holder, int position) {
         Project v = allProjects.get(position);

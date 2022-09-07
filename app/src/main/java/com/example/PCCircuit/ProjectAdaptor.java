@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 /**
- * This class is used by VehicleInfoActivity's Recycler View, it also contains the ViewHolder class
- * It is called by VehicleInfoActivity to display the vehicle model and capacity on RecyclerView
- * It also implements the onClick listener for user to click into a vehicle to see details
+ * This class is used by ProjectInfoActivity's Recycler View, it also contains the ViewHolder class
+ * It is called by ProjectInfoActivity to display the Project model and capacity on RecyclerView
+ * It also implements the onClick listener for user to click into a Project to see details
  *
  * @author adrianlee
  * @version 1.0
@@ -57,12 +57,6 @@ public class ProjectAdaptor extends RecyclerView.Adapter<ProjectAdaptor.ProjectA
             }
         }
 
-    /**
-     * This is the ViewHolder for the recycler view
-     * @param parent
-     * @param viewType
-     * @return
-     */
         @NonNull
         @Override
     public ProjectActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,11 +66,6 @@ public class ProjectAdaptor extends RecyclerView.Adapter<ProjectAdaptor.ProjectA
             return holder;
         }
 
-    /**
-     * This method pass the vehicle data to ViewHolder to display
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(@NonNull ProjectActivityHolder holder, int position) {
             Project v = allProjects.get(position);

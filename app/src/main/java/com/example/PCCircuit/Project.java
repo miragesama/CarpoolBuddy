@@ -4,12 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * This class is a parent class of car, electric car, bicycle, segway and helicopter
- * It has common properties such as vehicle type, capacity, model, owner email
- * It also has an ArrayList that contains list of user who has ever ride on the vehicle
- * When a vehicle is newly created, its Open-For-Booking status is defauled to Open,
- * it's rating is defaulted to 5 (highest)
- * This class also contains several useful method such as updateOpenCloseStatus, reduceVehicleCapacity
+ * This class is a parent class of PC and Keyboard
  *
  * @author adrianlee
  * @version 1.0
@@ -22,7 +17,7 @@ public class Project {
     private String ownerEmail;
     private String projectID;
     private String activeStatus;
-    private Integer rating;
+    private Double rating;
 
     public Project()
     {
@@ -70,7 +65,10 @@ public class Project {
     {
         return this.buildDate;
     }
-
+    public Double getRating()
+    {
+        return this.rating;
+    }
     public String getcustomerName()
     {
         return this.customerName;
@@ -138,10 +136,9 @@ public class Project {
     }
 
     /**
-     * This method reduce the capacity by 1
-     * The method is called when a user book this vehicle
+     * This method is setter of Rating
      */
-    public void setRating(Integer myRating)
+    public void setRating(Double myRating)
     {
         this.rating = myRating;
     }

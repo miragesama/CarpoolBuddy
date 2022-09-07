@@ -21,10 +21,10 @@ package com.example.PCCircuit;
         import java.util.ArrayList;
 
 /**
- * This class displays all vehicles on screen using recyclerview
- * It connects to firebase to retrieve all vehicles and save in an ArrayList
- * It then uses recyclerView with onClickListener to display model and capacity of all vehicles
- * User may click on a vehicle to see details, the vehicle info is passed to next intent via extras
+ * This class displays all projects on screen using recyclerview
+ * It connects to firebase to retrieve all projects and save in an ArrayList
+ * It then uses recyclerView with onClickListener to display projects
+ * User may click on a projects to see details, the projects info is passed to next intent via extras
  * There is a Refresh button that allows users to refresh content of recyclerview after update
  *
  * @author adrianlee

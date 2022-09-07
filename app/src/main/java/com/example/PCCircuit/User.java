@@ -3,10 +3,9 @@ package com.example.PCCircuit;
 import java.util.ArrayList;
 
 /**
- * This class is a parent class for student, teacher, parent and alumni
- * It contains common properties of user such as email, user type and rider rating
- * It also contains two ArrayList of vehicles, one for vehicle owned by the user,
- * the other for vehicle rode by the user
+ * This class is a parent class for Staff and Customer
+ * It contains common properties of user such as email, user type and user name
+ * It also contains two ArrayList of Projects
  *
  * @author adrianlee
  * @version 1.0
@@ -17,6 +16,7 @@ public class User {
     private String userName = "Someone";
     private String userType;
     private ArrayList<Project> ownedProjects = new ArrayList<>();
+    private Integer year_joined;
     private int avg_rating;
 
     public User()
@@ -30,6 +30,7 @@ public class User {
         this.email = someEmail;
         this.userType = someUserType;
         this.avg_rating = 5;
+        this.year_joined = 2021;
     }
 
     public User(String someUid, String someEmail, String someName, String someUserType)
@@ -41,8 +42,6 @@ public class User {
         this.avg_rating = 5;
     }
 
-
-
     /**
      * method to return projects owned by the user
      * @return
@@ -52,10 +51,6 @@ public class User {
         return this.ownedProjects;
     }
 
-    /**
-     * method to add project by staff
-     * @return
-     */
     public void addProject(Project myProject){
         this.ownedProjects.add(myProject);
     }
@@ -73,6 +68,8 @@ public class User {
     }
 
     public String getName() { return this.userName;}
+
+    public Integer getYearJoined() { return this.year_joined;}
 
     public void setEmail(String email) {
         this.email = email;

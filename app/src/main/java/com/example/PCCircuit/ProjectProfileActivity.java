@@ -23,14 +23,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
- * This class allows user to enter vehicle information for others to book.
- * It uses a spinner item to list types of vehicles that user can add
- * It then add the new Vehicle object onto FireBase Vehicle collection
- * It also update the Firebase User to add this vehicle to user's Arraylist of vehicles
- * It hide Booking and Rate Vehicle button if owner is current user, else hide Open button
- * The Book Vehicle button updates vehicle's capacity and save on firebase
- * The Rate Vehicle button updates vehicle's rating and save on firebase
- * The Open/close Vehicle button updates vehicle's OpenForBooking status and save on firebase
+ * This class allows user to Project information in detail
+ * User may also update some of the fields of the project
+ * and click to Archive or Delete the project
  *
  * @author adrianlee
  * @version 1.0
@@ -44,19 +39,13 @@ public class ProjectProfileActivity extends AppCompatActivity
     private String vehicleModel;
     private String projectID;
     private String customerName;
-    private String vehicleType;
-    private String vehiclePrice;
-    private String vehicleRating;
-    private String vehicleOpenStatus;
     private String userEmail;
     private String projectType;
     private String spreadUrl;
     private String buildDate;
-    private Integer vehicleID;
     private FirebaseFirestore firestore;
     private String TAG= "myTag";
     private Project myProj;
-    private User myUserObj;
 
     /**
      * This onCreate method connects to firebase, retrieve current user and link layout items to
@@ -80,9 +69,6 @@ public class ProjectProfileActivity extends AppCompatActivity
         TextView ProjectTypeText = findViewById(R.id.PP_ProjectType);
         EditText DetailsLinkEdit = (EditText) findViewById(R.id.PP_DetailsURL);
         EditText BuildDateEdit = (EditText) findViewById(R.id.PP_BuildDate);
-  //      Button bookingButton = findViewById(R.id.VehicleProfileBookButton);
-  //      Button openButton = findViewById(R.id.VehicleProfileOpenButton);
-  //      Button ratingButton = findViewById(R.id.VehicleProfileRateVehicleButton);
 
         // Bundle the data from RecyclerView
         Bundle extras = getIntent().getExtras();

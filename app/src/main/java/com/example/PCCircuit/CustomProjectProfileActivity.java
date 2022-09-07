@@ -20,7 +20,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+/**
+ * This class displays all customer projects on screen using recyclerview
+ * It allows user to give rating and leave comments of the project
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class CustomProjectProfileActivity extends AppCompatActivity {
     private String projectID;
     private String projectType;
@@ -29,6 +39,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private Project myProj;
     private String TAG= "myTag";
+    private User myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +54,6 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
         TextView ProjectIDText = findViewById(R.id.CPP_projectID);
         TextView ProjectTypeText = findViewById(R.id.CPP_projectType);
 
-
         // Bundle the data from RecyclerView
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -51,7 +61,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
             projectType = extras.getString("projectType");
             System.out.println("***** end of getExtra");
         }
-
+        User myUser = new User("X10001", "adrianlee0923@gmail.com", "Staff");
         ProjectIDText.setText(projectID);
         ProjectTypeText.setText(projectType);
     }
@@ -59,6 +69,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     public void oneStarClick(View v)
     {
         // call updateDatabase to update rating
+        calculateRating(myUser);
         Toast.makeText(getApplicationContext(), "Thanks for the 1 Star rating!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
@@ -67,6 +78,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     public void twoStarClick(View v)
     {
         // call updateDatabase to update rating
+        calculateRating(myUser);
         Toast.makeText(getApplicationContext(), "Thanks for the 2 Star rating!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
@@ -75,6 +87,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     public void threeStarClick(View v)
     {
         // call updateDatabase to update rating
+        calculateRating(myUser);
         Toast.makeText(getApplicationContext(), "Thanks for the 3 Star rating!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
@@ -83,6 +96,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     public void fourStarClick(View v)
     {
         // call updateDatabase to update rating
+        calculateRating(myUser);
         Toast.makeText(getApplicationContext(), "Thanks for the 4 Star rating!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
@@ -91,6 +105,7 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
     public void fiveStarClick(View v)
     {
         // call updateDatabase to update rating
+        calculateRating(myUser);
         Toast.makeText(getApplicationContext(), "Thanks for the 5 Star rating!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CustomerProfileActivity.class);
         startActivity(intent);
@@ -113,6 +128,36 @@ public class CustomProjectProfileActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public Double calculateRating(User myStaff)
+    {
+        Double year_join_portion;
+        Double num_proj_portion;
+        Double cust_rating_portion;
+        Double accumRating = 0.00;
+        Double overallRating;
+
+        // calculate number of years with company and apply 15%
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        year_join_portion = (year-myStaff.getYearJoined()) * 0.15;
+
+        // calculate number of projects completed and apply 15%
+        num_proj_portion = myStaff.getProject().size() * 0.15;
+
+        // calculate average customer rating and apply 70%
+        for(Project currProj : myStaff.getProject())
+        {
+            accumRating = accumRating + currProj.getRating();
+        }
+
+        cust_rating_portion = accumRating/myStaff.getProject().size() * 0.70;
+
+        // add up for overall rating, format to 2 decimal places
+        overallRating = Math.round((cust_rating_portion + num_proj_portion + year_join_portion)* 100.00) / 100.00;
+
+        return overallRating;
+        }
+
 
     private void updateDatabase(Project p){
         firestore = FirebaseFirestore.getInstance();

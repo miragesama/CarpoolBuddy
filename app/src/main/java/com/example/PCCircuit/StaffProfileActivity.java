@@ -18,10 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 /**
- * This class displays user's basic information on screen after user logged in
- * It also have several buttons for user to use
- * One button is to see all vehicles, another is to directly add a vehicle
- * It also allows the user to rate a rider, and see a list of recommended vehicles
+ * This class displays Staff's functions on screen after user logged in
  * There is also a Sign Out button on this screen
  *
  * @author adrianlee
@@ -68,15 +65,6 @@ public class StaffProfileActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 myUserObj = document.toObject(User.class);
-
-                                // Found the User object for current user
-                                /*if(mUser.getEmail().equals(myUserObj.getEmail()))
-                                {
-                                    // display user information on screen
-                                    user_type.setText(myUserObj.getUserType());
-                                    user_name.setText(myUserObj.getName());
-                                    //user_rating.setText(myUserObj.getRider_rating().toString());
-                                }*/
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

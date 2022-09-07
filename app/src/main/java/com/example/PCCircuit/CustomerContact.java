@@ -10,7 +10,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnFailureListener;
-
+/**
+ * This activity lists three different ways to contact the company via external site
+ *
+ * @author adrianlee
+ * @version 1.0
+ */
 public class CustomerContact extends AppCompatActivity {
 
     @Override

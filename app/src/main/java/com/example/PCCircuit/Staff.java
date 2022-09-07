@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 /**
  * This class is a child class of User
- * It has additional properties for Teacher type of User, such as title
  *
  * @author adrianlee
  * @version 1.0

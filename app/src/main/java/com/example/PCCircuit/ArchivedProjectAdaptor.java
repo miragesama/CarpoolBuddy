@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 /**
- * This class is used by VehicleInfoActivity's Recycler View, it also contains the ViewHolder class
- * It is called by VehicleInfoActivity to display the vehicle model and capacity on RecyclerView
- * It also implements the onClick listener for user to click into a vehicle to see details
+ * This class is used by ArchivedProjectInfoActivity's Recycler View, it also contains the ViewHolder class
+ * It is called by ArchivedProjectInfoActivity to display the Projects on RecyclerView
+ * It also implements the onClick listener for user to click into a project to see details
  *
  * @author adrianlee
  * @version 1.0

@@ -57,15 +57,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 myUserObj = document.toObject(User.class);
-
-                                // Found the User object for current user
-                                /*if(mUser.getEmail().equals(myUserObj.getEmail()))
-                                {
-                                    // display user information on screen
-                                    user_type.setText(myUserObj.getUserType());
-                                    user_name.setText(myUserObj.getName());
-                                    //user_rating.setText(myUserObj.getRider_rating().toString());
-                                }*/
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
